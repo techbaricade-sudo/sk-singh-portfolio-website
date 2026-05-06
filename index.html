@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Shivam Singh | Educator • Author • IT Professional</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #fefefe;
+      color: #0b1120;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Premium Gradient Animations */
+    @keyframes shimmer {
+      0% { background-position: -100% 0; }
+      100% { background-position: 200% 0; }
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+      100% { transform: translateY(0px); }
+    }
+    @keyframes softGlow {
+      0% { box-shadow: 0 8px 20px rgba(37,99,235,0.1); }
+      50% { box-shadow: 0 20px 40px rgba(37,99,235,0.2); }
+      100% { box-shadow: 0 8px 20px rgba(37,99,235,0.1); }
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #eef2ff; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(145deg, #2563eb, #3b82f6); border-radius: 10px; }
+
+    /* Glassmorphic Navbar */
+    .navbar {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(37,99,235,0.15);
+      transition: all 0.3s ease;
+    }
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0.9rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .logo h2 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0f2b4d, #2563eb, #0c4a6e);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 5s linear infinite;
+    }
+    .nav-links { display: flex; gap: 1.6rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #1e293b;
+      transition: 0.25s;
+      font-size: 0.95rem;
+      letter-spacing: -0.2px;
+      position: relative;
+    }
+    .nav-links a:after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 0%;
+      height: 2.5px;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      transition: 0.3s;
+      border-radius: 4px;
+    }
+    .nav-links a:hover:after { width: 100%; }
+    .nav-links a:hover { color: #2563eb; }
+    .menu-toggle { display: none; font-size: 1.8rem; cursor: pointer; background: none; border: none; }
+
+    @media (max-width: 950px) {
+      .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        background: rgba(255,255,255,0.98);
+        padding: 1.5rem;
+        border-radius: 28px;
+        margin-top: 1rem;
+        gap: 1rem;
+        text-align: center;
+        box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+      }
+      .nav-links.active { display: flex; }
+      .menu-toggle { display: block; }
+      .nav-container { padding: 0.9rem 1.5rem; }
+    }
+
+    section {
+      padding: 6rem 2rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .hero {
+      padding-top: 8rem;
+      background: radial-gradient(ellipse at 70% 30%, rgba(37,99,235,0.03), transparent 70%);
+    }
+    .hero-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 3rem;
+      justify-content: space-between;
+    }
+    .hero-content { flex: 1.2; }
+    .profile-pic { flex: 0.9; text-align: center; }
+    .profile-pic img {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 30px 40px -15px rgba(0,0,0,0.2);
+      border: 5px solid white;
+      transition: all 0.4s;
+      animation: float 5s ease-in-out infinite;
+    }
+    .hero-badge {
+      background: linear-gradient(115deg, #e0f2fe, #d9f0ff);
+      color: #075985;
+      font-weight: 700;
+      padding: 0.4rem 1.4rem;
+      border-radius: 50px;
+      display: inline-block;
+      margin-bottom: 1.2rem;
+    }
+    .hero-content h1 {
+      font-size: 3.7rem;
+      font-weight: 800;
+      line-height: 1.2;
+      background: linear-gradient(to right, #0f172a, #1e3a8a);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin: 1.8rem 0;
+    }
+    .social-icon {
+      background: white;
+      border-radius: 50%;
+      width: 46px;
+      height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.04);
+      transition: all 0.25s ease;
+      color: #1f2937;
+      font-size: 1.3rem;
+    }
+    .social-icon:hover {
+      transform: translateY(-6px) scale(1.05);
+      background: #2563eb;
+      color: white;
+      box-shadow: 0 15px 25px -8px #2563eb;
+    }
+    .btn {
+      padding: 0.9rem 2rem;
+      border-radius: 60px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.25s;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: linear-gradient(95deg, #2563eb, #1e40af);
+      color: white;
+      box-shadow: 0 10px 20px -5px #2563eb60;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 18px 30px -8px #2563eb; }
+    .btn-outline {
+      border: 2px solid #2563eb;
+      color: #2563eb;
+      background: transparent;
+    }
+    .btn-outline:hover { background: #2563eb; color: white; transform: translateY(-3px); }
+
+    .section-title {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #2563eb, #a5f3fc);
+      border-radius: 4px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(2px);
+      border-radius: 36px;
+      padding: 1.8rem;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.05);
+      transition: all 0.35s cubic-bezier(0.2,0.9,0.4,1.1);
+      border: 1px solid rgba(37,99,235,0.1);
+    }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 30px 45px -12px rgba(37,99,235,0.2); border-color: #2563eb20; animation: softGlow 2s infinite; }
+
+    .qual-grid, .skill-grid, .gallery-grid, .thought-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .exp-item {
+      border-left: 6px solid #2563eb;
+      padding-left: 1.8rem;
+      margin-bottom: 2.2rem;
+      transition: 0.2s;
+    }
+    .gallery-img, .thought-img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 28px;
+      cursor: pointer;
+      transition: all 0.4s;
+    }
+    .gallery-img:hover, .thought-img:hover { transform: scale(1.02); filter: brightness(1.02); box-shadow: 0 25px 30px -12px rgba(0,0,0,0.2);}
+    .publication-card {
+      background: white;
+      border-radius: 36px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .publication-cover-fixed {
+      width: 100%;
+      height: 300px;
+      object-fit: contain;
+      background: #f9fbfe;
+      padding: 1rem;
+    }
+    .contact-info {
+      background: linear-gradient(125deg, #ffffff, #f8fafd);
+      border-radius: 2rem;
+      padding: 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 15px 30px -15px rgba(0,0,0,0.05);
+    }
+    footer {
+      background: #0b1120;
+      color: #cbd5e1;
+      text-align: center;
+      padding: 2.5rem 1rem;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1200;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.92);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content img { max-width: 90vw; max-height: 85vh; border-radius: 24px; object-fit: contain; }
+    .close-modal { position: absolute; top: 30px; right: 45px; color: white; font-size: 48px; cursor: pointer; transition: 0.2s; }
+    @media (max-width: 700px) {
+      .hero-content h1 { font-size: 2.4rem; }
+      .profile-pic img { width: 210px; height: 210px; }
+      .section-title { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo"><h2>Shivam<span style="color:#2563eb">.Singh</span></h2></div>
+    <button class="menu-toggle" id="mobile-menu" aria-label="menu"><i class="fas fa-bars"></i></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home">Home</a></li><li><a href="#about">About</a></li><li><a href="#qualifications">Qualifications</a></li>
+      <li><a href="#experience">Experience</a></li><li><a href="#services">Services</a></li><li><a href="#publications">Publications</a></li>
+      <li><a href="#gallery">Gallery</a></li><li><a href="#thoughts">Thoughts</a></li><li><a href="#contact">Contact</a></li>
+      <li><a href="https://techbaricade.com" target="_blank">Tech Baricade</a></li>
+      <li><a href="https://drive.google.com/file/d/1boA_eoNFt9Z8ecgrHZRFDbd7vW3tJMUg/view?usp=drivesdk" target="_blank" class="btn-outline" style="padding:0.3rem 1rem;">Resume</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="hero">
+  <div class="hero-grid" data-aos="fade-up" data-aos-duration="1000">
+    <div class="hero-content">
+      <span class="hero-badge"><i class="fas fa-crown"></i> Visionary Leader</span>
+      <h1>Mr. Shivam Kumar Singh</h1>
+      <div class="hero-titles" style="font-size:1.25rem; font-weight:600; margin:0.7rem 0;">Educator • Author • IT Professional • Tech Consultant</div>
+      <p>Managing Director – Tech Baricade Group | Academic Director – Lakshya Academy <br> Incharge, IT Department – Sr. Sec. Delhi Public School (CBSE)</p>
+      <div class="social-links">
+        <a class="social-icon" href="https://www.facebook.com/share/17SPc4RWJZ/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a class="social-icon" href="https://www.instagram.com/sksingh_social" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a class="social-icon" href="https://t.me/Sksingh_social" target="_blank"><i class="fab fa-telegram"></i></a>
+        <a class="social-icon" href="https://x.com/Sksingh_social" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a class="social-icon" href="https://github.com/Sksingh2007" target="_blank"><i class="fab fa-github"></i></a>
+        <a class="social-icon" href="https://wa.me/919709316822" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a class="social-icon" href="https://www.snapchat.com/@sksingh_social" target="_blank"><i class="fab fa-snapchat"></i></a>
+      </div>
+      <div class="btn-group">
+        <a href="#contact" class="btn btn-primary">Connect Now</a>
+        <a href="https://drive.google.com/file/d/1boA_eoNFt9Z8ecgrHZRFDbd7vW3tJMUg/view?usp=drivesdk" target="_blank" class="btn btn-outline">Download Resume</a>
+      </div>
+    </div>
+    <div class="profile-pic" data-aos="fade-left" data-aos-delay="200">
+      <img src="https://drive.google.com/thumbnail?id=12NMJ9R2XQ7eDzoXoWy_2ZivQ0CtyrtI3&sz=w1000" alt="Shivam Profile">
+    </div>
+  </div>
+</section>
+
+<!-- About Section (Complete Details) -->
+<section id="about" data-aos="fade-up">
+  <h2 class="section-title">About Me</h2>
+  <div class="card" style="padding:2.2rem;">
+    <p><strong>Mr. Shivam Kumar Singh</strong> is an educator, IT professional, author, entrepreneur, and digital creator dedicated to empowering education through technology and innovation. With expertise in computer education, digital solutions, educational leadership, and creative development, he has successfully contributed to both academic and technological fields.</p>
+    <p style="margin-top:1rem;">He is currently serving as the <strong>Incharge of the IT Department</strong> at Sr. Sec. Delhi Public School, Patuaha, Saharsa (affiliated to CBSE New Delhi up to 10+2). He is also the <strong>Managing Director of Tech Baricade Group</strong> and <strong>Academic Director of Lakshya Academy</strong>, where he actively works toward enhancing educational standards and digital learning systems.</p>
+    <p style="margin-top:1rem;">As an author, he has published multiple books focusing on social awareness, human emotions, and educational inspiration. His mission bridges traditional education with modern technological advancements.</p>
+    <p style="margin-top:1rem;"><i class="fas fa-phone-alt"></i> +91-9709316822 &nbsp;|&nbsp; <i class="fas fa-envelope"></i> personal.shivamkumarsingh@gmail.com</p>
+  </div>
+</section>
+
+<!-- Full Qualifications Section -->
+<section id="qualifications" data-aos="fade-up">
+  <h2 class="section-title">Academic & Certifications</h2>
+  <div class="qual-grid">
+    <div class="card"><i class="fas fa-graduation-cap fa-2x" style="color:#2563eb"></i><h3>PGDCA</h3><p>Post Graduate Diploma in Computer Application</p></div>
+    <div class="card"><i class="fas fa-chart-line fa-2x"></i><h3>B.Com (Honours)</h3><p>Finance & Management</p></div>
+    <div class="card"><i class="fas fa-chalkboard-user fa-2x"></i><h3>CTTC & ADCA</h3><p>Computer Teacher Training, Advance Diploma</p></div>
+    <div class="card"><i class="fab fa-microsoft fa-2x"></i><h3>Microsoft Certified AI Developer</h3><p>AI & Digital Productivity</p></div>
+    <div class="card"><i class="fab fa-google fa-2x"></i><h3>Google Certified Educator</h3><p>EdTech & Classroom Innovation</p></div>
+    <div class="card"><i class="fas fa-laptop-code fa-2x"></i><h3>Digital Teaching Certified</h3><p>Smart Learning Methodologies</p></div>
+  </div>
+</section>
+
+<!-- Experience Full -->
+<section id="experience" data-aos="fade-up">
+  <h2 class="section-title">Professional Experience</h2>
+  <div class="exp-item"><h3>📌 Incharge, IT Department</h3><p><strong>Sr. Sec. Delhi Public School, Patuaha, Saharsa</strong> – Managing IT infrastructure, digital learning systems, website & technical operations.</p></div>
+  <div class="exp-item"><h3>📌 Managing Director</h3><p><strong>Tech Baricade Group</strong> – EdTech consultancy, quiz competitions, digital branding, IT solutions.</p></div>
+  <div class="exp-item"><h3>📌 Academic Director</h3><p><strong>Lakshya Academy</strong> – Academic planning, student mentorship, curriculum development, quality standards.</p></div>
+  <div class="exp-item"><h3>📌 Computer Educator</h3><p><strong>Crescent Play & Public School (2021-2024)</strong> – Computer science, digital literacy, interactive teaching & quizzes.</p></div>
+  <div class="exp-item"><h3>📌 Substitute Teacher</h3><p><strong>Modern Public School, Auriya (2020-21)</strong> – Classroom management & academic support.</p></div>
+</section>
+
+<!-- Services -->
+<section id="services" data-aos="fade-up">
+  <h2 class="section-title">Core Services & Skills</h2>
+  <div class="skill-grid">
+    <div class="card"><i class="fas fa-chalkboard fa-2x"></i><h3>Educational Leadership</h3><p>Classroom Mgmt, Mentorship, Digital Pedagogy</p></div>
+    <div class="card"><i class="fas fa-code fa-2x"></i><h3>Web & Software Dev</h3><p>HTML5/CSS3, Billing Software, IT Systems</p></div>
+    <div class="card"><i class="fas fa-palette fa-2x"></i><h3>Graphic & Branding</h3><p>Advertisement, Social Media Creativity</p></div>
+    <div class="card"><i class="fas fa-microphone-alt fa-2x"></i><h3>Public Speaking & Mentorship</h3><p>Workshops, Tech Seminars, Motivation</p></div>
+  </div>
+</section>
+
+<!-- Publications Page (complete) -->
+<section id="publications" data-aos="fade-up">
+  <h2 class="section-title">Publications & Writings</h2>
+  <div class="qual-grid">
+    <div class="publication-card card">
+      <img class="publication-cover-fixed" src="https://lh3.googleusercontent.com/sitesv/AA5AbUBsvf0JGT3N2s3T5OETLfWtr6aTC3BAPDd05aHTfV4kAiF_AwXH4xHOHJ1IU2e5W6PuevKcDTGQZgt9p_jkUVVwOo5PoeYVHRLUN50W3Y2Q91uMpgm66KirZs4e46joJxGmvOTUhOY-M8Q7ozXGWqqp-pqK8YBtqOjLw1BSSxePztFc3_rGrnPcVRVJCdBLtCu2wfyD2H4okXR-C78Gp_c-9YIhVn97uG-sTLg=w1280" alt="Price of Freedom">
+      <h3>Price of Freedom – India’s Path to Independence</h3>
+      <p>English | History/Non-fiction | ISBN: 978-93-341-6742-9. Untold sacrifices of freedom fighters.</p>
+      <a href="https://share.google/cdToHS7JY1Xo06Fzo" target="_blank" class="btn btn-primary" style="margin-top: 0.7rem;">Preview / Buy</a>
+    </div>
+    <div class="publication-card card">
+      <img class="publication-cover-fixed" src="https://lh3.googleusercontent.com/sitesv/AA5AbUDeAogSAuHfYpGcBk4YrgeQOgFnHHR70d2Ya8KFDFNxqMuvJQmwazin2OTEoJU-tyrVQ3PDIDc-DAPqZHZQhUxhcu-4fBzjNeVwWDWUfxQH3DCVlfXWymWbu_JtwyyjcDaga424WnNpg04qkQThcpG_TkxvFBIoluFZrIP3ZNRhe2quK0AXT4-PsJfom0BULqFPjv5k27WxBs9v8NC0lFTsJqSIHqvmwSZ2=w1280" alt="Aakhir Kab Tak">
+      <h3>आखिर कब तक?</h3>
+      <p>Hindi | Social Reality | ISBN: 978-93-341-6742-9 | Pages:131 | ₹235. Powerful narrative.</p>
+      <a href="https://share.google/cdToHS7JY1Xo06Fzo" target="_blank" class="btn btn-primary">Buy Now</a>
+    </div>
+    <div class="publication-card card">
+      <img class="publication-cover-fixed" src="https://drive.google.com/thumbnail?id=1zecjWAQQQkZvN6UiYMzY1zP1efJeHm6H&sz=w1000" alt="Life is a Series of Game">
+      <h3>The Life is a Series of Game</h3>
+      <p>ISBN: 978-93-342-1071-2 | Life philosophy, motivation & human psychology.</p>
+    </div>
+  </div>
+  <div style="margin-top:2rem; background: linear-gradient(125deg,#eef2ff,#ffffff); border-radius: 2rem; padding: 1.6rem;">
+    <h3><i class="fas fa-feather-alt"></i> Upcoming: Uncovered Dimensions & नदी की चुप्पी</h3>
+    <img src="https://lh3.googleusercontent.com/sitesv/AA5AbUB25a_-CmpWDdN_8h74GpoV5hPk2GYsRdXJV7tf4zIMUbVRpYeqTJZtd0WfRG-CwIqMvdMfpeYKx1ad8n4FFkbR9fZpvJwKqW5aKzzzH9ow9LWZGCznvIEbenHdS1sfijoYvo2--SL-V7XtwF06hyD4qe7pqtlgreAIXQX-qmXMRtCkm0VgeJj-61LaSn5DUX6SMoRkMeYKuNZhGclGYdvpcHY9vyLTA0blI2Q=w1280" style="width: 100px; border-radius: 20px;"> Exploring Layers of Reality — Coming Soon.
+  </div>
+</section>
+
+<!-- Gallery Section -->
+<section id="gallery" data-aos="fade-up">
+  <h2 class="section-title">Official Gallery</h2>
+  <div class="gallery-grid" id="galleryContainer"></div>
+</section>
+
+<!-- Thought & Quotes Gallery -->
+<section id="thoughts" data-aos="fade-up">
+  <h2 class="section-title">Thoughts & Inspirations</h2>
+  <div class="thought-grid" id="thoughtContainer"></div>
+</section>
+
+<!-- Contact + Social Integrated -->
+<section id="contact" data-aos="fade-up">
+  <h2 class="section-title">Connect & Collaborate</h2>
+  <div class="contact-info">
+    <div><i class="fas fa-mobile-alt"></i> +91-9709316822</div>
+    <div><i class="fas fa-envelope"></i> personal.shivamkumarsingh@gmail.com</div>
+    <div><i class="fab fa-whatsapp"></i> <a href="https://wa.me/919709316822" target="_blank">WhatsApp</a></div>
+    <div><i class="fab fa-telegram"></i> <a href="https://t.me/Sksingh_social">Telegram</a></div>
+    <div><i class="fab fa-github"></i> <a href="https://github.com/Sksingh2007">GitHub</a></div>
+    <div><i class="fab fa-snapchat"></i> <a href="https://www.snapchat.com/@sksingh_social">Snapchat</a></div>
+  </div>
+  <div style="text-align:center; margin-top:2.2rem;">
+    <a href="https://techbaricade.com" target="_blank" class="btn btn-primary"><i class="fas fa-globe"></i> Explore Tech Baricade Group</a>
+    <a href="https://drive.google.com/file/d/1boA_eoNFt9Z8ecgrHZRFDbd7vW3tJMUg/view?usp=drivesdk" target="_blank" class="btn btn-outline" style="margin-left:1rem;">Download Full Resume</a>
+  </div>
+</section>
+
+<!-- Premium Footer -->
+<footer>
+  <p>© 2026 / All Rights Reserved for Site Owner.</p>
+  <p>Designed with ❤️ By <strong>Mr. Shivam Kumar Singh</strong></p>
+  <p>This site is Hosted by <a href="https://techbaricade.com" target="_blank" style="color:#60a5fa; text-decoration:none; font-weight:600;">Tech Baricade</a> | Innovating Digital Presence</p>
+</footer>
+
+<div id="imageModal" class="modal">
+  <span class="close-modal">&times;</span>
+  <div class="modal-content"><img id="modalImg" src="" alt="preview"></div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 800, once: false, mirror: true, offset: 30 });
+
+  const mobileBtn = document.getElementById('mobile-menu');
+  const navLinksElem = document.getElementById('nav-links');
+  mobileBtn.addEventListener('click', () => navLinksElem.classList.toggle('active'));
+
+  const galleryUrls = [
+    "https://drive.google.com/thumbnail?id=1lxtSu7EKUOyzSoQEbI3MG4JNREo_Ginh&sz=w1000",
+    "https://drive.google.com/thumbnail?id=1JZAK3xpa0Y7KTYK2f_XZ8j0R0fjEmEEl&sz=w1000",
+    "https://drive.google.com/thumbnail?id=1TwTyLv9I8ssCxA9gA-yZdciqxNME0Rz3&sz=w1000",
+    "https://drive.google.com/thumbnail?id=1vTqEM_p9gI-kPTXCmo_UZpRDW4j_mVHp&sz=w1000",
+    "https://drive.google.com/thumbnail?id=1t1niiMzLuMA_WVVNMt24i5Dmb1334i7-&sz=w1000"
+  ];
+  const thoughtUrls = [
+    "https://drive.google.com/thumbnail?id=1j6ZUJR8v5KBkVS5KRPc9r9hhj14z5Oz2&sz=w1000",
+    "https://drive.google.com/thumbnail?id=1sHF_MI-rzMNcJT1xjzYmCSXHEU4cZDpw&sz=w1000",
+    "https://drive.google.com/thumbnail?id=13xDb3IltAWjLkM6MvK7ZVWjuT8kREqW4&sz=w1000",
+    "https://drive.google.com/thumbnail?id=1igMd3lvi852vZR5DpllrTVGA1U3FdmR4&sz=w1000",
+    "https://drive.google.com/thumbnail?id=1FKeNM4rlen69z-N7HNjeKyXWTel27foa&sz=w1000"
+  ];
+
+  function buildGrid(containerId, urls, className) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    urls.forEach(url => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      const img = document.createElement('img');
+      img.src = url;
+      img.className = className;
+      img.style.objectFit = 'cover';
+      img.style.height = '250px';
+      img.style.width = '100%';
+      img.style.borderRadius = '28px';
+      img.addEventListener('click', () => openModal(url));
+      div.appendChild(img);
+      container.appendChild(div);
+    });
+  }
+  function openModal(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    modal.style.display = 'flex';
+    modalImg.src = src;
+  }
+  document.querySelector('.close-modal').addEventListener('click', () => document.getElementById('imageModal').style.display = 'none');
+  window.addEventListener('click', (e) => { if(e.target === document.getElementById('imageModal')) document.getElementById('imageModal').style.display = 'none'; });
+
+  buildGrid('galleryContainer', galleryUrls, 'gallery-img');
+  buildGrid('thoughtContainer', thoughtUrls, 'thought-img');
+
+  document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const hash = this.getAttribute('href');
+      if (hash === '#') return;
+      const target = document.querySelector(hash);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+        if (navLinksElem.classList.contains('active')) navLinksElem.classList.remove('active');
+      }
+    });
+  });
+</script>
+</body>
+</html>
