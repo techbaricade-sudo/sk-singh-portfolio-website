@@ -2,487 +2,920 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Shivam Singh | Educator • Author • IT Professional</title>
+  
   <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- AOS -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- AOS, ChartJS, and Three.js -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <style>
+    /* Neo-Premium Design System Tokens */
+    :root {
+      --primary: #2563eb;
+      --primary-glow: rgba(37, 99, 235, 0.2);
+      --bg-global: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --navbar-bg: rgba(255, 255, 255, 0.8);
+      --google-blue: #4285F4;
+      --ms-blue: #00a4ef;
+      --chart-grid: #e2e8f0;
+      --success-color: #10b981;
+      --neon-glow: rgba(37, 99, 235, 0.15);
+    }
+
+    [data-theme="dark"] {
+      --bg-global: #070a13;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --card-bg: #0f172a;
+      --card-border: #1e293b;
+      --navbar-bg: rgba(7, 10, 19, 0.8);
+      --primary-glow: rgba(37, 99, 235, 0.4);
+      --chart-grid: #1e293b;
+      --neon-glow: rgba(37, 99, 235, 0.35);
+    }
+
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #fefefe;
-      color: #0b1120;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
+      background-color: var(--bg-global); color: var(--text-main);
+      line-height: 1.6; overflow-x: hidden; position: relative;
     }
 
-    /* Premium Gradient Animations */
-    @keyframes shimmer {
-      0% { background-position: -100% 0; }
-      100% { background-position: 200% 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 85px; }
+
+    /* Animated Fluid Background Mesh */
+    .bg-mesh-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -2; overflow: hidden; pointer-events: none;
     }
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
-      100% { transform: translateY(0px); }
-    }
-    @keyframes softGlow {
-      0% { box-shadow: 0 8px 20px rgba(37,99,235,0.1); }
-      50% { box-shadow: 0 20px 40px rgba(37,99,235,0.2); }
-      100% { box-shadow: 0 8px 20px rgba(37,99,235,0.1); }
+    .mesh-wave { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.4; mix-blend-mode: multiply; animation: floatMesh 10s infinite alternate ease-in-out; }
+    [data-theme="dark"] .mesh-wave { mix-blend-mode: screen; opacity: 0.12; }
+    .wave-1 { top: -10%; right: -10%; width: 450px; height: 450px; background: radial-gradient(circle, #3b82f6 0%, transparent 80%); }
+    .wave-2 { bottom: 10%; left: -15%; width: 550px; height: 550px; background: radial-gradient(circle, #a855f7 0%, transparent 80%); animation-delay: -3s; }
+    .wave-3 { top: 35%; right: -15%; width: 350px; height: 350px; background: radial-gradient(circle, #06b6d4 0%, transparent 80%); animation-delay: -6s; }
+
+    @keyframes floatMesh {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(25px, 35px) scale(1.1); }
     }
 
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #eef2ff; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(145deg, #2563eb, #3b82f6); border-radius: 10px; }
-
-    /* Glassmorphic Navbar */
+    /* Premium Sticky Navbar */
     .navbar {
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(37,99,235,0.15);
-      transition: all 0.3s ease;
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: var(--navbar-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--card-border); padding: 0.8rem 1.2rem;
     }
-    .nav-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0.9rem 2.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .logo h2 {
-      font-size: 1.9rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #0f2b4d, #2563eb, #0c4a6e);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: shimmer 5s linear infinite;
-    }
-    .nav-links { display: flex; gap: 1.6rem; list-style: none; }
-    .nav-links a {
-      text-decoration: none;
-      font-weight: 600;
-      color: #1e293b;
-      transition: 0.25s;
-      font-size: 0.95rem;
-      letter-spacing: -0.2px;
-      position: relative;
-    }
-    .nav-links a:after {
-      content: '';
-      position: absolute;
-      bottom: -6px;
-      left: 0;
-      width: 0%;
-      height: 2.5px;
-      background: linear-gradient(90deg, #2563eb, #60a5fa);
-      transition: 0.3s;
-      border-radius: 4px;
-    }
-    .nav-links a:hover:after { width: 100%; }
-    .nav-links a:hover { color: #2563eb; }
-    .menu-toggle { display: none; font-size: 1.8rem; cursor: pointer; background: none; border: none; }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .logo h2 { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
+    .logo span { color: var(--primary); }
+    .nav-actions { display: flex; align-items: center; gap: 0.8rem; }
+    .theme-toggle-btn { background: none; border: none; font-size: 1.15rem; color: var(--text-main); cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .menu-toggle { background: none; border: none; font-size: 1.25rem; color: var(--text-main); cursor: pointer; }
 
-    @media (max-width: 950px) {
-      .nav-links {
-        display: none;
-        width: 100%;
-        flex-direction: column;
-        background: rgba(255,255,255,0.98);
-        padding: 1.5rem;
-        border-radius: 28px;
-        margin-top: 1rem;
-        gap: 1rem;
-        text-align: center;
-        box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
-      }
-      .nav-links.active { display: flex; }
-      .menu-toggle { display: block; }
-      .nav-container { padding: 0.9rem 1.5rem; }
+    .nav-links {
+      position: fixed; top: 58px; left: -100%; width: 100%; height: calc(100vh - 58px);
+      background: var(--card-bg); flex-direction: column; display: flex; padding: 1.5rem; gap: 0.5rem; list-style: none;
+      transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; border-top: 1px solid var(--card-border);
     }
+    .nav-links.active { left: 0; }
+    .nav-links a { text-decoration: none; font-size: 0.95rem; font-weight: 600; color: var(--text-main); display: block; padding: 0.75rem 1rem; border-radius: 12px; }
+    .nav-links a:not(.btn-resume):hover { background: var(--bg-global); color: var(--primary); }
+    .btn-resume { background: var(--primary); color: #ffffff !important; text-align: center; margin-top: 0.5rem; font-weight: 700; box-shadow: 0 4px 12px var(--primary-glow); }
 
-    section {
-      padding: 6rem 2rem;
-      max-width: 1300px;
-      margin: 0 auto;
-    }
-    .hero {
-      padding-top: 8rem;
-      background: radial-gradient(ellipse at 70% 30%, rgba(37,99,235,0.03), transparent 70%);
-    }
-    .hero-grid {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 3rem;
-      justify-content: space-between;
-    }
-    .hero-content { flex: 1.2; }
-    .profile-pic { flex: 0.9; text-align: center; }
-    .profile-pic img {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 30px 40px -15px rgba(0,0,0,0.2);
-      border: 5px solid white;
-      transition: all 0.4s;
-      animation: float 5s ease-in-out infinite;
-    }
-    .hero-badge {
-      background: linear-gradient(115deg, #e0f2fe, #d9f0ff);
-      color: #075985;
-      font-weight: 700;
-      padding: 0.4rem 1.4rem;
-      border-radius: 50px;
-      display: inline-block;
-      margin-bottom: 1.2rem;
-    }
-    .hero-content h1 {
-      font-size: 3.7rem;
-      font-weight: 800;
-      line-height: 1.2;
-      background: linear-gradient(to right, #0f172a, #1e3a8a);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .social-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.9rem;
-      margin: 1.8rem 0;
-    }
-    .social-icon {
-      background: white;
-      border-radius: 50%;
-      width: 46px;
-      height: 46px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.04);
-      transition: all 0.25s ease;
-      color: #1f2937;
-      font-size: 1.3rem;
-    }
-    .social-icon:hover {
-      transform: translateY(-6px) scale(1.05);
-      background: #2563eb;
-      color: white;
-      box-shadow: 0 15px 25px -8px #2563eb;
-    }
-    .btn {
-      padding: 0.9rem 2rem;
-      border-radius: 60px;
-      font-weight: 700;
-      text-decoration: none;
-      transition: 0.25s;
-      display: inline-block;
-    }
-    .btn-primary {
-      background: linear-gradient(95deg, #2563eb, #1e40af);
-      color: white;
-      box-shadow: 0 10px 20px -5px #2563eb60;
-    }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 18px 30px -8px #2563eb; }
-    .btn-outline {
-      border: 2px solid #2563eb;
-      color: #2563eb;
-      background: transparent;
-    }
-    .btn-outline:hover { background: #2563eb; color: white; transform: translateY(-3px); }
+    /* Layout & Base Safe Boundaries */
+    section { padding: 4.5rem 1.2rem 1.5rem 1.2rem; max-width: 520px; margin: 0 auto; }
+    .section-title { font-size: 1.55rem; font-weight: 800; margin-bottom: 1.2rem; letter-spacing: -0.5px; color: var(--text-main); }
+    .section-title::after { content: ''; display: block; width: 35px; height: 4px; background: var(--primary); border-radius: 4px; margin-top: 6px; }
 
-    .section-title {
-      font-size: 2.8rem;
-      font-weight: 800;
-      margin-bottom: 2rem;
-      position: relative;
-      display: inline-block;
-    }
-    .section-title:after {
-      content: '';
-      position: absolute;
-      bottom: -12px;
-      left: 0;
-      width: 80px;
-      height: 4px;
-      background: linear-gradient(90deg, #2563eb, #a5f3fc);
-      border-radius: 4px;
-    }
+    .card { background: var(--card-bg); border-radius: 24px; padding: 1.4rem; box-shadow: 0 10px 25px -8px rgba(0,0,0,0.02); border: 1px solid var(--card-border); margin-bottom: 1.2rem; position: relative; }
+    .hero { padding-top: 5.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
 
-    .card {
-      background: rgba(255,255,255,0.9);
-      backdrop-filter: blur(2px);
-      border-radius: 36px;
-      padding: 1.8rem;
-      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.05);
-      transition: all 0.35s cubic-bezier(0.2,0.9,0.4,1.1);
-      border: 1px solid rgba(37,99,235,0.1);
-    }
-    .card:hover { transform: translateY(-8px); box-shadow: 0 30px 45px -12px rgba(37,99,235,0.2); border-color: #2563eb20; animation: softGlow 2s infinite; }
+    /* Profile Wrapper Structure */
+    .profile-container { width: 105px; height: 105px; margin: 0 auto 1.2rem auto; position: relative; }
+    .profile-pic img { width: 100%; height: 100%; border-radius: 24px; object-fit: cover; border: 3.5px solid var(--card-bg); box-shadow: 0 12px 24px -6px rgba(37,99,235,0.2); }
 
-    .qual-grid, .skill-grid, .gallery-grid, .thought-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
+    .hero-badge { background: rgba(37, 99, 235, 0.08); color: var(--primary); font-weight: 700; font-size: 0.72rem; padding: 0.25rem 0.85rem; border-radius: 50px; display: inline-block; margin-bottom: 0.6rem; letter-spacing: 0.3px; }
+    .hero-content h1 { font-size: 1.65rem; font-weight: 800; letter-spacing: -0.5px; line-height: 1.3; }
+    .hero-titles { font-size: 0.88rem; color: var(--text-muted); font-weight: 600; margin: 0.5rem 0 1rem 0; }
+    .hero-p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.2rem; }
+
+    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; width: 100%; margin-bottom: 1rem; }
+    .btn { padding: 0.75rem 1rem; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 0.85rem; text-align: center; display: flex; align-items: center; justify-content: center; }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--primary); color: #ffffff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); }
+    .btn-outline { border: 1.5px solid var(--primary); color: var(--primary); background: transparent; }
+
+    /* Certifications Wrapper Cards */
+    .cert-section-grid { width: 100%; display: flex; flex-direction: column; gap: 1.2rem; margin-top: 1.5rem; }
+    .premium-cert-card { position: relative; border-radius: 24px; padding: 1.6rem 1.4rem; text-align: center; background: var(--card-bg); box-shadow: 0 12px 28px -10px rgba(0,0,0,0.04); }
+    .premium-cert-card.google-border { border: 2px solid rgba(66, 133, 244, 0.2); background: linear-gradient(145deg, var(--card-bg) 0%, rgba(66, 133, 244, 0.02) 100%); }
+    .premium-cert-card.ms-border { border: 2px solid rgba(0, 164, 239, 0.18); background: linear-gradient(145deg, var(--card-bg) 0%, rgba(0, 164, 239, 0.02) 100%); }
+    .cert-badge-shield { width: 68px; height: 68px; margin: 0 auto 0.8rem auto; display: flex; align-items: center; justify-content: center; background: var(--card-bg); border-radius: 18px; box-shadow: 0 4px 14px rgba(0,0,0,0.03); }
+    .cert-badge-shield.g i { color: var(--google-blue); font-size: 2.2rem; }
+    .cert-badge-shield.m i { color: var(--ms-blue); font-size: 2.2rem; }
+    .premium-cert-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.2rem; }
+    .cert-authority { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.5px; }
+    .cert-authority.g { color: var(--google-blue); }
+    .cert-authority.m { color: var(--ms-blue); }
+    .premium-cert-card p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .cert-timeline-stamp { display: inline-flex; justify-content: center; gap: 0.6rem; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-bottom: 1.2rem; background: rgba(148, 163, 184, 0.05); padding: 0.3rem 0.75rem; border-radius: 8px; }
+    .btn-cert-redirect { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0.75rem 1.4rem; border-radius: 50px; font-weight: 700; font-size: 0.84rem; text-decoration: none; color: #ffffff; width: 85%; margin: 0 auto; }
+    .btn-cert-redirect.g { background: var(--google-blue); }
+    .btn-cert-redirect.m { background: var(--ms-blue); }
+
+    /* Standalone Social Box Component */
+    .standalone-social-block { width: 100%; margin-top: 1.2rem; text-align: center; padding: 1.2rem; background: var(--card-bg); border-radius: 20px; border: 1px dashed var(--card-border); }
+    .standalone-social-block h4 { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.8rem; font-weight: 700; letter-spacing: 1px; }
+    .social-ribbon-flex { display: flex; justify-content: center; gap: 0.7rem; flex-wrap: wrap; }
+    .circle-social-btn { width: 38px; height: 38px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #ffffff; font-size: 1.1rem; text-decoration: none; }
+    .circle-social-btn.fb { background: #1877F2; }
+    .circle-social-btn.insta { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+    .circle-social-btn.tw-x { background: #000000; }
+    .circle-social-btn.tg { background: #0088cc; }
+    .circle-social-btn.snap { background: #FFFC00; color: #000000; }
+    .circle-social-btn.threads { background: #000000; border: 1px solid #333; }
+
+    /* ==========================================================================
+       SUPER ADVANCED 3D GRAPHICS & FULLY AUTOMATED ANALYTICS SECTION
+       ========================================================================== */
+    .analytics-card-container { 
+      overflow: hidden; 
+      position: relative; 
+      border: 1px solid var(--primary);
+      box-shadow: 0 0 30px var(--neon-glow);
+      background: linear-gradient(135deg, var(--card-bg) 0%, rgba(37,99,235,0.02) 100%);
     }
-    .exp-item {
-      border-left: 6px solid #2563eb;
-      padding-left: 1.8rem;
-      margin-bottom: 2.2rem;
-      transition: 0.2s;
+    .threejs-3d-canvas-overlay { 
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+      z-index: 1; pointer-events: none; opacity: 0.8; 
     }
-    .gallery-img, .thought-img {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      border-radius: 28px;
-      cursor: pointer;
-      transition: all 0.4s;
+    .analytics-content-wrapper { position: relative; z-index: 2; }
+    
+    .analytics-counter-wrap { 
+      display: flex; align-items: center; justify-content: center; gap: 12px; 
+      margin-bottom: 1.2rem; padding: 0.8rem; 
+      background: rgba(37, 99, 235, 0.08); border-radius: 16px; 
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      box-shadow: inset 0 0 15px rgba(37, 99, 235, 0.05);
+      position: relative; overflow: hidden;
     }
-    .gallery-img:hover, .thought-img:hover { transform: scale(1.02); filter: brightness(1.02); box-shadow: 0 25px 30px -12px rgba(0,0,0,0.2);}
-    .publication-card {
-      background: white;
-      border-radius: 36px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+    /* Pulsing Radar Ring Icon Effect */
+    .pulse-radar-dot {
+      width: 10px; height: 10px; background-color: var(--success-color); border-radius: 50%;
+      position: relative; display: inline-block; margin-right: 4px;
     }
-    .publication-cover-fixed {
-      width: 100%;
-      height: 300px;
-      object-fit: contain;
-      background: #f9fbfe;
-      padding: 1rem;
+    .pulse-radar-dot::after {
+      content: ''; width: 100%; height: 100%; background: var(--success-color); border-radius: 50%;
+      position: absolute; top:0; left:0; animation: radarPing 1.8s infinite ease-in-out;
     }
-    .contact-info {
-      background: linear-gradient(125deg, #ffffff, #f8fafd);
-      border-radius: 2rem;
-      padding: 2.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: space-between;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 15px 30px -15px rgba(0,0,0,0.05);
+    @keyframes radarPing { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(3.5); opacity: 0; } }
+
+    .counter-value { font-size: 1.6rem; font-weight: 800; color: var(--primary); letter-spacing: 0.5px; text-shadow: 0 0 10px var(--neon-glow); }
+    
+    .analytics-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: var(--bg-global); padding: 5px; border-radius: 14px; margin-bottom: 1.2rem; }
+    .analytics-tab-btn { 
+      background: none; border: none; padding: 0.6rem 0.2rem; font-size: 0.72rem; 
+      font-weight: 800; color: var(--text-muted); cursor: pointer; border-radius: 10px; 
+      text-align: center; position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    footer {
-      background: #0b1120;
-      color: #cbd5e1;
-      text-align: center;
-      padding: 2.5rem 1rem;
+    .analytics-tab-btn.active { 
+      background: var(--primary); color: #ffffff; 
+      box-shadow: 0 4px 15px var(--primary-glow);
     }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1200;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.92);
-      justify-content: center;
-      align-items: center;
+    
+    /* Auto-Rotation Progress Bar Link Under Tabs */
+    .auto-progress-bar-wrap { width: 100%; height: 3px; background: rgba(148, 163, 184, 0.1); margin-top: -0.8rem; margin-bottom: 1.2rem; border-radius: 10px; overflow: hidden; }
+    .auto-progress-fill { width: 0%; height: 100%; background: var(--primary); border-radius: 10px; }
+
+    .chart-container-box { width: 100%; position: relative; height: 230px; margin: 0 auto; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.02)); }
+
+    /* Professional Matrix Component */
+    .matrix-list { display: flex; flex-direction: column; gap: 1rem; }
+    .matrix-node-card { display: flex; flex-direction: column; padding: 1.4rem; gap: 1.2rem; }
+    .matrix-header-row { display: flex; align-items: center; gap: 1rem; }
+    .matrix-logo-box { width: 52px; height: 52px; border-radius: 12px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); overflow: hidden; }
+    .matrix-logo-box img { width: 100%; height: 100%; object-fit: contain; }
+    .matrix-titles-box h3 { font-size: 1.05rem; font-weight: 700; color: var(--text-main); line-height: 1.3; }
+    .matrix-titles-box .org-name { font-size: 0.82rem; font-weight: 600; color: var(--primary); }
+    .matrix-body-p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+    .matrix-action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .matrix-btn { padding: 0.6rem; border-radius: 10px; font-size: 0.78rem; font-weight: 700; text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+    .matrix-btn.web { background: rgba(37, 99, 235, 0.06); color: var(--primary); border: 1px solid rgba(37, 99, 235, 0.1); }
+    .matrix-btn.profile { background: var(--bg-global); color: var(--text-main); border: 1px solid var(--card-border); }
+
+    /* Qualifications Stack Items */
+    .qual-list { display: flex; flex-direction: column; gap: 0.7rem; }
+    .qual-card-compact { display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1.1rem; }
+    .qual-card-compact i { color: var(--primary); background: rgba(37, 99, 235, 0.05); width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem; }
+    .qual-card-compact h4 { font-size: 0.9rem; font-weight: 700; color: var(--text-main); }
+    .qual-card-compact p { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* Publications Module Layout */
+    .pub-flex { display: flex; flex-direction: column; gap: 1rem; }
+    .pub-card-mobile { overflow: hidden; padding: 0; }
+    .pub-img-wrap { background: rgba(148, 163, 184, 0.02); padding: 1rem; text-align: center; border-bottom: 1px solid var(--card-border); }
+    .pub-img-wrap img { height: 135px; object-fit: contain; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .pub-details { padding: 1rem; }
+    .pub-details h3 { font-size: 0.98rem; font-weight: 700; }
+    .pub-details p { font-size: 0.8rem; color: var(--text-muted); margin: 3px 0 0.8rem 0; }
+
+    /* OFFICIAL GALLERY (2-COLUMNS COHESIVE MOBILE MATRIX) */
+    .gallery-cohesive-grid { 
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%;
     }
-    .modal-content img { max-width: 90vw; max-height: 85vh; border-radius: 24px; object-fit: contain; }
-    .close-modal { position: absolute; top: 30px; right: 45px; color: white; font-size: 48px; cursor: pointer; transition: 0.2s; }
-    @media (max-width: 700px) {
-      .hero-content h1 { font-size: 2.4rem; }
-      .profile-pic img { width: 210px; height: 210px; }
-      .section-title { font-size: 2rem; }
+    .gallery-cohesive-grid .photo-node-card { 
+      padding: 0; margin: 0; border-radius: 18px; overflow: hidden; border: 1px solid var(--card-border); aspect-ratio: 1 / 1;
+    }
+    .gallery-thumb-fit { 
+      width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer; transition: transform 0.4s ease;
+    }
+    .photo-node-card:hover .gallery-thumb-fit { transform: scale(1.06); }
+
+    /* THOUGHTS SECTION (1 PHOTO PER LINE - PURE FIT TO LINE EDGE-TO-EDGE) */
+    .thoughts-fullwidth-vertical-stack {
+      display: flex; flex-direction: column; gap: 16px; width: 100%;
+    }
+    .thoughts-fullwidth-vertical-stack .thought-standalone-card {
+      padding: 0; margin: 0; border-radius: 20px; overflow: hidden; border: 1px solid var(--card-border); width: 100%; background: var(--card-bg);
+    }
+    .thought-img-full-fit {
+      width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; background: #00000005; display: block; cursor: pointer; transition: transform 0.3s ease;
+    }
+    [data-theme="dark"] .thought-img-full-fit { background: #ffffff03; }
+    .thought-standalone-card:hover .thought-img-full-fit { transform: scale(1.02); }
+
+    /* PREMIUM CONNECTIVITY INTERACTION HUB TERMINAL */
+    .interaction-terminal-box { position: relative; overflow: hidden; }
+    .input-field-group { position: relative; margin-bottom: 1rem; }
+    .input-field-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.95rem; pointer-events: none; }
+    .input-field-group.textarea-mode i { top: 18px; transform: none; }
+    
+    .form-modern-input { 
+      width: 100%; padding: 0.85rem 1rem 0.85rem 2.8rem; border-radius: 14px; background: var(--bg-global); border: 1px solid var(--card-border); color: var(--text-main); font-size: 0.88rem; outline: none; font-weight: 500;
+    }
+    .form-modern-input:focus { border-color: var(--primary); background: var(--card-bg); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.05); }
+    .form-modern-input:focus + i { color: var(--primary); }
+
+    .btn-submit-premium { width: 100%; border: none; background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%); color: #ffffff; padding: 0.9rem; border-radius: 14px; font-weight: 700; font-size: 0.92rem; cursor: pointer; box-shadow: 0 4px 14px var(--primary-glow); display: flex; align-items: center; justify-content: center; gap: 6px; }
+    
+    /* Success Message Animation System Overlay Screen */
+    .success-terminal-screen {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--card-bg); z-index: 10; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 1.5rem; opacity: 0; transform: scale(0.95); transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .success-terminal-screen.triggered { display: flex; opacity: 1; transform: scale(1); }
+    .success-icon-ring { width: 64px; height: 64px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); border: 2px dashed var(--success-color); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; animation: rotateRing 12s linear infinite; }
+    @keyframes rotateRing { 100% { transform: rotate(360deg); } }
+    .success-icon-ring i { color: var(--success-color); font-size: 1.6rem; }
+    .success-terminal-screen h3 { font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem; }
+    .success-terminal-screen p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.2rem; max-width: 280px; }
+    .btn-reset-terminal { background: var(--bg-global); color: var(--text-main); border: 1px solid var(--card-border); padding: 0.6rem 1.2rem; border-radius: 10px; font-weight: 700; font-size: 0.78rem; cursor: pointer; }
+
+    /* Quick Contact Triggers */
+    .contact-grid-links { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 1.2rem; }
+    .contact-btn-quick { display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 0.85rem; border-radius: 14px; font-size: 0.88rem; font-weight: 700; }
+
+    footer { background: #060911; color: #475569; text-align: center; padding: 2rem 1.2rem; font-size: 0.75rem; margin-top: 2rem; border-top: 1px solid #111827; }
+    footer a { color: #f1f5f9; text-decoration: none; font-weight: 600; }
+
+    /* Modal Backdrop Layer Box */
+    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(6, 9, 17, 0.95); justify-content: center; align-items: center; padding: 1rem; backdrop-filter: blur(6px); }
+    .modal-content img { max-width: 100%; max-height: 75vh; border-radius: 14px; }
+    .close-modal { position: absolute; top: 20px; right: 20px; color: #ffffff; font-size: 2rem; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border-radius: 50%; }
+
+    @media (min-width: 768px) {
+      section { max-width: 680px; }
+      .gallery-cohesive-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .pub-flex { flex-direction: row; }
+      .pub-card-mobile { flex: 1; }
+      .nav-links { position: static; display: flex; flex-direction: row; height: auto; width: auto; background: none; padding: 0; border: none; }
+      .menu-toggle { display: none; }
     }
   </style>
 </head>
-<body>
+<body data-theme="light">
 
+<!-- Global Ambient Moving Mesh Overlay Background Canvas Component -->
+<div class="bg-mesh-canvas">
+  <div class="mesh-wave wave-1"></div>
+  <div class="mesh-wave wave-2"></div>
+  <div class="mesh-wave wave-3"></div>
+</div>
+
+<!-- Header Sticky Component Navbar -->
 <nav class="navbar">
   <div class="nav-container">
-    <div class="logo"><h2>Shivam<span style="color:#2563eb">.Singh</span></h2></div>
-    <button class="menu-toggle" id="mobile-menu" aria-label="menu"><i class="fas fa-bars"></i></button>
+    <div class="logo"><h2>Shivam<span>.Singh</span></h2></div>
+    <div class="nav-actions">
+      <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme"><i class="fas fa-moon" id="theme-icon"></i></button>
+      <button class="menu-toggle" id="mobile-menu" aria-label="Toggle Navigation"><i class="fas fa-bars"></i></button>
+    </div>
     <ul class="nav-links" id="nav-links">
-      <li><a href="#home">Home</a></li><li><a href="#about">About</a></li><li><a href="#qualifications">Qualifications</a></li>
-      <li><a href="#experience">Experience</a></li><li><a href="#services">Services</a></li><li><a href="#publications">Publications</a></li>
-      <li><a href="#gallery">Gallery</a></li><li><a href="#thoughts">Thoughts</a></li><li><a href="#contact">Contact</a></li>
-      <li><a href="https://techbaricade.com" target="_blank">Tech Baricade</a></li>
-      <li><a href="https://drive.google.com/file/d/1boA_eoNFt9Z8ecgrHZRFDbd7vW3tJMUg/view?usp=drivesdk" target="_blank" class="btn-outline" style="padding:0.3rem 1rem;">Resume</a></li>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#analytics">Analytics</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#qualifications">Qualifications</a></li>
+      <li><a href="#matrix">Matrix</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#thoughts">Thoughts</a></li>
+      <li><a href="#interaction">Interaction Hub</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="https://drive.google.com/file/d/1boA_eoNFt9Z8ecgrHZRFDbd7vW3tJMUg/view?usp=drivesdk" target="_blank" class="btn btn-resume">Resume</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- Hero Section -->
+<!-- Home Profile Section -->
 <section id="home" class="hero">
-  <div class="hero-grid" data-aos="fade-up" data-aos-duration="1000">
-    <div class="hero-content">
-      <span class="hero-badge"><i class="fas fa-crown"></i> Visionary Leader</span>
-      <h1>Mr. Shivam Kumar Singh</h1>
-      <div class="hero-titles" style="font-size:1.25rem; font-weight:600; margin:0.7rem 0;">Educator • Author • IT Professional • Tech Consultant</div>
-      <p>Managing Director – Tech Baricade Group | Academic Director – Lakshya Academy <br> Incharge, IT Department – Sr. Sec. Delhi Public School (CBSE)</p>
-      <div class="social-links">
-        <a class="social-icon" href="https://www.facebook.com/share/17SPc4RWJZ/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-        <a class="social-icon" href="https://www.instagram.com/sksingh_social" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a class="social-icon" href="https://t.me/Sksingh_social" target="_blank"><i class="fab fa-telegram"></i></a>
-        <a class="social-icon" href="https://x.com/Sksingh_social" target="_blank"><i class="fab fa-twitter"></i></a>
-        <a class="social-icon" href="https://github.com/Sksingh2007" target="_blank"><i class="fab fa-github"></i></a>
-        <a class="social-icon" href="https://wa.me/919709316822" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        <a class="social-icon" href="https://www.snapchat.com/@sksingh_social" target="_blank"><i class="fab fa-snapchat"></i></a>
-      </div>
-      <div class="btn-group">
-        <a href="#contact" class="btn btn-primary">Connect Now</a>
-        <a href="https://drive.google.com/file/d/1boA_eoNFt9Z8ecgrHZRFDbd7vW3tJMUg/view?usp=drivesdk" target="_blank" class="btn btn-outline">Download Resume</a>
-      </div>
+  <div class="profile-container" data-aos="zoom-in">
+    <div class="profile-pic">
+      <img src="https://drive.google.com/thumbnail?id=12NMJ9R2XQ7eDzoXoWy_2ZivQ0CtyrtI3&sz=w1000" alt="Mr. Shivam Kumar Singh">
     </div>
-    <div class="profile-pic" data-aos="fade-left" data-aos-delay="200">
-      <img src="https://drive.google.com/thumbnail?id=12NMJ9R2XQ7eDzoXoWy_2ZivQ0CtyrtI3&sz=w1000" alt="Shivam Profile">
+  </div>
+  
+  <div class="hero-text-block" data-aos="fade-up">
+    <span class="hero-badge"><i class="fas fa-crown"></i> Visionary Leader</span>
+    <h1>Mr. Shivam Kumar Singh</h1>
+    <div class="hero-titles">Educator • Author • IT Professional • Tech Consultant</div>
+    <p class="hero-p">MD – Tech Baricade Group | Academic Director – Lakshya Academy <br> IT Dept Incharge – Delhi Public School (CBSE)</p>
+    
+    <div class="btn-group">
+      <a href="#contact" class="btn btn-primary">Connect Now</a>
+      <a href="https://drive.google.com/file/d/1boA_eoNFt9Z8ecgrHZRFDbd7vW3tJMUg/view?usp=drivesdk" target="_blank" class="btn btn-outline">Get Resume</a>
+    </div>
+  </div>
+
+  <!-- Cyber Verified Credentials Space Module -->
+  <div class="cert-section-grid" data-aos="fade-up">
+    <div class="premium-cert-card google-border">
+      <div class="cert-badge-shield g"><i class="fab fa-google"></i></div>
+      <h3>Gemini Certified Faculty</h3>
+      <div class="cert-authority g">Google for Education</div>
+      <p>Authorized competencies in running generative AI deployment ecosystems, technical prompt architecture frameworks, and digital workflows.</p>
+      <div class="cert-timeline-stamp"><i class="far fa-calendar-check"></i> Valid Framework: 2026 - 2029</div>
+      <a href="https://edu.google.accredible.com/2d5fb363-63bf-4dba-80d4-5b807b2e70e1#acc.4Fh5teHI" target="_blank" class="btn-cert-redirect g"><i class="fas fa-certificate"></i> View Certificate</a>
+    </div>
+
+    <div class="premium-cert-card ms-border">
+      <div class="cert-badge-shield m"><i class="fab fa-microsoft"></i></div>
+      <h3>Certified AI Developer</h3>
+      <div class="cert-authority m">Microsoft Credentials</div>
+      <p>Verified structural alignment in cloud engine integrations, multi-layered machine provisioning layouts, and automated platforms.</p>
+      <div class="cert-timeline-stamp"><i class="far fa-shield-check"></i> Identity Verified Node</div>
+      <a href="https://learn.microsoft.com/en-us/credentials/" target="_blank" class="btn-cert-redirect m"><i class="fas fa-award"></i> Verify Credentials</a>
+    </div>
+
+    <div class="standalone-social-block" data-aos="fade-up">
+      <h4>Connect Socially</h4>
+      <div class="social-ribbon-flex">
+        <a href="https://www.facebook.com/share/17SPc4RWJZ/" target="_blank" class="circle-social-btn fb"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/sksingh_social?igsh=MTJmY244MWJlM2I1aw==" target="_blank" class="circle-social-btn insta"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/Sksingh_social/" target="_blank" class="circle-social-btn tw-x"><i class="fab fa-twitter"></i></a>
+        <a href="https://t.me/Sksingh_social" target="_blank" class="circle-social-btn tg"><i class="fab fa-telegram"></i></a>
+        <a href="https://www.snapchat.com/@sksingh_social" target="_blank" class="circle-social-btn snap"><i class="fab fa-snapchat"></i></a>
+        <a href="https://www.threads.net/@sksingh_social" target="_blank" class="circle-social-btn threads"><i class="fab fa-threads"></i></a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- About Section (Complete Details) -->
+<!-- FULLY AUTOMATED INTERACTIVE 3D DATA ANALYTICS HUB -->
+<section id="analytics" data-aos="fade-up">
+  <h2 class="section-title">Audience Analytics</h2>
+  <div class="card analytics-card-container">
+    
+    <!-- ThreeJS WebGL Kinetic Wave Overlay Container -->
+    <div id="threeJsAnalyticsCanvas" class="threejs-3d-canvas-overlay"></div>
+
+    <div class="analytics-content-wrapper">
+      <div class="analytics-counter-wrap">
+        <span class="pulse-radar-dot"></span>
+        <span style="font-size: 0.82rem; font-weight:800; letter-spacing: 0.3px;">LIVE NETWORK ENGAGEMENT ENGINE:</span>
+        <span class="counter-value" id="viewCounter">1,42,580</span>
+      </div>
+
+      <div class="analytics-tabs" id="analyticsTabsParent">
+        <button class="analytics-tab-btn active" data-chart-key="growth">Growth</button>
+        <button class="analytics-tab-btn" data-chart-key="age">Age</button>
+        <button class="analytics-tab-btn" data-chart-key="gender">Sex</button>
+        <button class="analytics-tab-btn" data-chart-key="region">Region</button>
+      </div>
+
+      <!-- Automated Progression Tracker Strip -->
+      <div class="auto-progress-bar-wrap">
+        <div class="auto-progress-fill" id="rotationProgressBar"></div>
+      </div>
+
+      <div class="chart-container-box">
+        <canvas id="analyticsChartCanvas"></canvas>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- About Section -->
 <section id="about" data-aos="fade-up">
   <h2 class="section-title">About Me</h2>
-  <div class="card" style="padding:2.2rem;">
-    <p><strong>Mr. Shivam Kumar Singh</strong> is an educator, IT professional, author, entrepreneur, and digital creator dedicated to empowering education through technology and innovation. With expertise in computer education, digital solutions, educational leadership, and creative development, he has successfully contributed to both academic and technological fields.</p>
-    <p style="margin-top:1rem;">He is currently serving as the <strong>Incharge of the IT Department</strong> at Sr. Sec. Delhi Public School, Patuaha, Saharsa (affiliated to CBSE New Delhi up to 10+2). He is also the <strong>Managing Director of Tech Baricade Group</strong> and <strong>Academic Director of Lakshya Academy</strong>, where he actively works toward enhancing educational standards and digital learning systems.</p>
-    <p style="margin-top:1rem;">As an author, he has published multiple books focusing on social awareness, human emotions, and educational inspiration. His mission bridges traditional education with modern technological advancements.</p>
-    <p style="margin-top:1rem;"><i class="fas fa-phone-alt"></i> +91-9709316822 &nbsp;|&nbsp; <i class="fas fa-envelope"></i> personal.shivamkumarsingh@gmail.com</p>
+  <div class="card">
+    <p style="font-size: 0.92rem; opacity: 0.95;"><strong>Mr. Shivam Kumar Singh</strong> is an educator, IT professional, author, entrepreneur, and digital creator dedicated to building innovative architectures and digital learning paradigms.</p>
+    <p style="margin-top: 0.6rem; font-size: 0.82rem; color: var(--text-muted);"><i class="fas fa-location-dot" style="color:var(--primary)"></i> Saharsa, Bihar, India</p>
   </div>
 </section>
 
-<!-- Full Qualifications Section -->
+<!-- Qualifications Modular Lists Component -->
 <section id="qualifications" data-aos="fade-up">
-  <h2 class="section-title">Academic & Certifications</h2>
-  <div class="qual-grid">
-    <div class="card"><i class="fas fa-graduation-cap fa-2x" style="color:#2563eb"></i><h3>PGDCA</h3><p>Post Graduate Diploma in Computer Application</p></div>
-    <div class="card"><i class="fas fa-chart-line fa-2x"></i><h3>B.Com (Honours)</h3><p>Finance & Management</p></div>
-    <div class="card"><i class="fas fa-chalkboard-user fa-2x"></i><h3>CTTC & ADCA</h3><p>Computer Teacher Training, Advance Diploma</p></div>
-    <div class="card"><i class="fab fa-microsoft fa-2x"></i><h3>Microsoft Certified AI Developer</h3><p>AI & Digital Productivity</p></div>
-    <div class="card"><i class="fab fa-google fa-2x"></i><h3>Google Certified Educator</h3><p>EdTech & Classroom Innovation</p></div>
-    <div class="card"><i class="fas fa-laptop-code fa-2x"></i><h3>Digital Teaching Certified</h3><p>Smart Learning Methodologies</p></div>
+  <h2 class="section-title">Qualifications</h2>
+  <div class="qual-list">
+    <div class="card qual-card-compact"><i class="fas fa-user-check"></i><div><h4>Mr. Shivam Kumar Singh</h4><p>Academic Profile Context Parameters</p></div></div>
+    <div class="card qual-card-compact"><i class="fas fa-graduation-cap"></i><div><h4>PGDCA</h4><p>Post Graduate Diploma in Computer Application</p></div></div>
+    <div class="card qual-card-compact"><i class="fas fa-school"></i><div><h4>M.Com</h4><p>Master of Commerce</p></div></div>
+    <div class="card qual-card-compact"><i class="fas fa-chart-pie"></i><div><h4>B.Com</h4><p>Bachelor of Commerce</p></div></div>
+    <div class="card qual-card-compact"><i class="fas fa-chalkboard-user"></i><div><h4>CTTC</h4><p>Computer Teacher Training Certificate</p></div></div>
+    <div class="card qual-card-compact"><i class="fas fa-shield-halved"></i><div><h4>KYP Framework</h4><p>Kushal Yuva Programme | Bihar Govt. Qualified</p></div></div>
+    <div class="card qual-card-compact"><i class="fas fa-terminal"></i><div><h4>Advanced Application Stack</h4><p>ADCA | ADIT | DCA | CCC | DTP Suite Layouts</p></div></div>
+    <div class="card qual-card-compact"><i class="fas fa-display"></i><div><h4>Educational Technology</h4><p>Digital Teaching & Instructional Technology Certified</p></div></div>
   </div>
 </section>
 
-<!-- Experience Full -->
-<section id="experience" data-aos="fade-up">
-  <h2 class="section-title">Professional Experience</h2>
-  <div class="exp-item"><h3>📌 Incharge, IT Department</h3><p><strong>Sr. Sec. Delhi Public School, Patuaha, Saharsa</strong> – Managing IT infrastructure, digital learning systems, website & technical operations.</p></div>
-  <div class="exp-item"><h3>📌 Managing Director</h3><p><strong>Tech Baricade Group</strong> – EdTech consultancy, quiz competitions, digital branding, IT solutions.</p></div>
-  <div class="exp-item"><h3>📌 Academic Director</h3><p><strong>Lakshya Academy</strong> – Academic planning, student mentorship, curriculum development, quality standards.</p></div>
-  <div class="exp-item"><h3>📌 Computer Educator</h3><p><strong>Crescent Play & Public School (2021-2024)</strong> – Computer science, digital literacy, interactive teaching & quizzes.</p></div>
-  <div class="exp-item"><h3>📌 Substitute Teacher</h3><p><strong>Modern Public School, Auriya (2020-21)</strong> – Classroom management & academic support.</p></div>
-</section>
+<!-- Corporate Infrastructure Matrix Section Components -->
+<section id="matrix" data-aos="fade-up">
+  <h2 class="section-title">Professional Matrix</h2>
+  <div class="matrix-list">
+    <div class="card matrix-node-card">
+      <div class="matrix-header-row">
+        <div class="matrix-logo-box"><img src="https://www.dpssaharsa.com/assets/dps-saharsa-logo.png" alt="DPS Saharsa Logo"></div>
+        <div class="matrix-titles-box">
+          <h3>Incharge, IT Department</h3>
+          <div class="org-name">Sr. Sec. Delhi Public School, Saharsa</div>
+        </div>
+      </div>
+      <p class="matrix-body-p">Managing network structures, security encryptions, and autonomous institutional systems.</p>
+      <div class="matrix-action-row">
+        <a href="https://www.dpssaharsa.com" target="_blank" class="matrix-btn web"><i class="fas fa-globe"></i> Official Website</a>
+        <a href="https://sites.google.com/view/dpssaharsa/it-department" target="_blank" class="matrix-btn profile"><i class="fas fa-user-tie"></i> View Profile</a>
+      </div>
+    </div>
 
-<!-- Services -->
-<section id="services" data-aos="fade-up">
-  <h2 class="section-title">Core Services & Skills</h2>
-  <div class="skill-grid">
-    <div class="card"><i class="fas fa-chalkboard fa-2x"></i><h3>Educational Leadership</h3><p>Classroom Mgmt, Mentorship, Digital Pedagogy</p></div>
-    <div class="card"><i class="fas fa-code fa-2x"></i><h3>Web & Software Dev</h3><p>HTML5/CSS3, Billing Software, IT Systems</p></div>
-    <div class="card"><i class="fas fa-palette fa-2x"></i><h3>Graphic & Branding</h3><p>Advertisement, Social Media Creativity</p></div>
-    <div class="card"><i class="fas fa-microphone-alt fa-2x"></i><h3>Public Speaking & Mentorship</h3><p>Workshops, Tech Seminars, Motivation</p></div>
+    <div class="card matrix-node-card">
+      <div class="matrix-header-row">
+        <div class="matrix-logo-box"><img src="https://surveyheartmedia.s3.ap-south-1.amazonaws.com/logos/techbaricade@gmail.com_logo.png?r=0.15833068034607245" alt="Tech Baricade Group Logo"></div>
+        <div class="matrix-titles-box">
+          <h3>Managing Director</h3>
+          <div class="org-name">Tech Baricade Group</div>
+        </div>
+      </div>
+      <p class="matrix-body-p">EdTech architecture consulting, digital presence optimization, web assets setup.</p>
+      <div class="matrix-action-row">
+        <a href="https://techbaricade.com/" target="_blank" class="matrix-btn web"><i class="fas fa-globe"></i> Official Website</a>
+        <a href="https://techbaricade.com/#director" target="_blank" class="matrix-btn profile"><i class="fas fa-user-tie"></i> View Profile</a>
+      </div>
+    </div>
+
+    <div class="card matrix-node-card">
+      <div class="matrix-header-row">
+        <div class="matrix-logo-box"><img src="https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/c5147741a29f92f14076a39cd375d4/69eba4b91fdb9c954f8804d4/sh_1777050876176.jpg" alt="Lakshya Academy Logo"></div>
+        <div class="matrix-titles-box">
+          <h3>Academic Director</h3>
+          <div class="org-name">Lakshya Academy</div>
+        </div>
+      </div>
+      <p class="matrix-body-p">Supervising dynamic curricula and student assessment operational frameworks.</p>
+      <div class="matrix-action-row">
+        <a href="https://lakshya.techbaricade.com/" target="_blank" class="matrix-btn web"><i class="fas fa-globe"></i> Official Website</a>
+        <a href="https://lakshya.techbaricade.com/#board" target="_blank" class="matrix-btn profile"><i class="fas fa-user-tie"></i> View Profile</a>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- Publications Page (complete) -->
+<!-- Publications Section Frame -->
 <section id="publications" data-aos="fade-up">
-  <h2 class="section-title">Publications & Writings</h2>
-  <div class="qual-grid">
-    <div class="publication-card card">
-      <img class="publication-cover-fixed" src="https://lh3.googleusercontent.com/sitesv/AA5AbUBsvf0JGT3N2s3T5OETLfWtr6aTC3BAPDd05aHTfV4kAiF_AwXH4xHOHJ1IU2e5W6PuevKcDTGQZgt9p_jkUVVwOo5PoeYVHRLUN50W3Y2Q91uMpgm66KirZs4e46joJxGmvOTUhOY-M8Q7ozXGWqqp-pqK8YBtqOjLw1BSSxePztFc3_rGrnPcVRVJCdBLtCu2wfyD2H4okXR-C78Gp_c-9YIhVn97uG-sTLg=w1280" alt="Price of Freedom">
-      <h3>Price of Freedom – India’s Path to Independence</h3>
-      <p>English | History/Non-fiction | ISBN: 978-93-341-6742-9. Untold sacrifices of freedom fighters.</p>
-      <a href="https://share.google/cdToHS7JY1Xo06Fzo" target="_blank" class="btn btn-primary" style="margin-top: 0.7rem;">Preview / Buy</a>
+  <h2 class="section-title">Publications</h2>
+  <div class="pub-flex">
+    <div class="card pub-card-mobile">
+      <div class="pub-img-wrap"><img src="https://lh3.googleusercontent.com/sitesv/AA5AbUBsvf0JGT3N2s3T5OETLfWtr6aTC3BAPDd05aHTfV4kAiF_AwXH4xHOHJ1IU2e5W6PuevKcDTGQZgt9p_jkUVVwOo5PoeYVHRLUN50W3Y2Q91uMpgm66KirZs4e46joJxGmvOTUhOY-M8Q7ozXGWqqp-pqK8YBtqOjLw1BSSxePztFc3_rGrnPcVRVJCdBLtCu2wfyD2H4okXR-C78Gp_c-9YIhVn97uG-sTLg=w1280" alt="Price of Freedom Book"></div>
+      <div class="pub-details">
+        <h3>Price of Freedom</h3>
+        <p>ISBN: 978-93-341-6742-9</p>
+        <a href="https://share.google/cdToHS7JY1Xo06Fzo" target="_blank" class="btn btn-outline" style="display:block; font-size:0.8rem; padding:0.4rem 0; border-radius:10px;">Preview Layout</a>
+      </div>
     </div>
-    <div class="publication-card card">
-      <img class="publication-cover-fixed" src="https://lh3.googleusercontent.com/sitesv/AA5AbUDeAogSAuHfYpGcBk4YrgeQOgFnHHR70d2Ya8KFDFNxqMuvJQmwazin2OTEoJU-tyrVQ3PDIDc-DAPqZHZQhUxhcu-4fBzjNeVwWDWUfxQH3DCVlfXWymWbu_JtwyyjcDaga424WnNpg04qkQThcpG_TkxvFBIoluFZrIP3ZNRhe2quK0AXT4-PsJfom0BULqFPjv5k27WxBs9v8NC0lFTsJqSIHqvmwSZ2=w1280" alt="Aakhir Kab Tak">
-      <h3>आखिर कब तक?</h3>
-      <p>Hindi | Social Reality | ISBN: 978-93-341-6742-9 | Pages:131 | ₹235. Powerful narrative.</p>
-      <a href="https://share.google/cdToHS7JY1Xo06Fzo" target="_blank" class="btn btn-primary">Buy Now</a>
+    <div class="card pub-card-mobile">
+      <div class="pub-img-wrap"><img src="https://drive.google.com/uc?export=view&id=1xFuQ9hCs8UPlFmAccHW_O6H1yGRyTnTs" alt="Aakhir Kab Tak Book"></div>
+      <div class="pub-details">
+        <h3>आखिर कब तक?</h3>
+        <p>ISBN: 978-93-341-6742-9</p>
+        <a href="https://share.google/cdToHS7JY1Xo06Fzo" target="_blank" class="btn btn-outline" style="display:block; font-size:0.8rem; padding:0.4rem 0; border-radius:10px;">Buy Copy</a>
+      </div>
     </div>
-    <div class="publication-card card">
-      <img class="publication-cover-fixed" src="https://drive.google.com/thumbnail?id=1zecjWAQQQkZvN6UiYMzY1zP1efJeHm6H&sz=w1000" alt="Life is a Series of Game">
-      <h3>The Life is a Series of Game</h3>
-      <p>ISBN: 978-93-342-1071-2 | Life philosophy, motivation & human psychology.</p>
-    </div>
-  </div>
-  <div style="margin-top:2rem; background: linear-gradient(125deg,#eef2ff,#ffffff); border-radius: 2rem; padding: 1.6rem;">
-    <h3><i class="fas fa-feather-alt"></i> Upcoming: Uncovered Dimensions & नदी की चुप्पी</h3>
-    <img src="https://lh3.googleusercontent.com/sitesv/AA5AbUB25a_-CmpWDdN_8h74GpoV5hPk2GYsRdXJV7tf4zIMUbVRpYeqTJZtd0WfRG-CwIqMvdMfpeYKx1ad8n4FFkbR9fZpvJwKqW5aKzzzH9ow9LWZGCznvIEbenHdS1sfijoYvo2--SL-V7XtwF06hyD4qe7pqtlgreAIXQX-qmXMRtCkm0VgeJj-61LaSn5DUX6SMoRkMeYKuNZhGclGYdvpcHY9vyLTA0blI2Q=w1280" style="width: 100px; border-radius: 20px;"> Exploring Layers of Reality — Coming Soon.
   </div>
 </section>
 
-<!-- Gallery Section -->
+<!-- COHESIVE SYSTEM BALANCED OFFICIAL GALLERY -->
 <section id="gallery" data-aos="fade-up">
   <h2 class="section-title">Official Gallery</h2>
-  <div class="gallery-grid" id="galleryContainer"></div>
+  <div class="gallery-cohesive-grid" id="galleryContainer"></div>
 </section>
 
-<!-- Thought & Quotes Gallery -->
+<!-- MODERNIZED THOUGHTS VERTICAL STACK (ONE THOUGHT PER LINE - EDGE TO EDGE FULL WIDTH) -->
 <section id="thoughts" data-aos="fade-up">
   <h2 class="section-title">Thoughts & Inspirations</h2>
-  <div class="thought-grid" id="thoughtContainer"></div>
+  <div class="thoughts-fullwidth-vertical-stack" id="thoughtContainer"></div>
 </section>
 
-<!-- Contact + Social Integrated -->
+<!-- Enterprise Secure Message Terminal Communication Interaction Hub -->
+<section id="interaction" data-aos="fade-up">
+  <h2 class="section-title">Interaction Hub</h2>
+  <div class="card interaction-terminal-box">
+    
+    <!-- Success Modal Transition Sheet -->
+    <div class="success-terminal-screen" id="successScreen">
+      <div class="success-icon-ring"><i class="fas fa-shield-halved"></i></div>
+      <h3>Transmission Secure</h3>
+      <p>Greetings Mr. Shivam Singh, your communication packet has been registered successfully. Our node infrastructure will log your query shortly.</p>
+      <button class="btn-reset-terminal" onclick="resetInteractionTerminal()">Send Another Packet</button>
+    </div>
+
+    <div id="formContentWrapper">
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 1.2rem;"><i class="fas fa-network-wired" style="color:var(--primary)"></i> Connect to the Director's data gateway securely.</p>
+      <form id="interactionForm" onsubmit="triggerProfessionalFeedback(event)">
+        
+        <div class="input-field-group">
+          <input type="text" class="form-modern-input" id="userName" placeholder="Your Official Name" required>
+          <i class="fas fa-user-tie"></i>
+        </div>
+        
+        <div class="input-field-group">
+          <input type="email" class="form-modern-input" id="userEmail" placeholder="Your Enterprise Email Address" required>
+          <i class="fas fa-envelope-open"></i>
+        </div>
+        
+        <div class="input-field-group textarea-mode">
+          <textarea class="form-modern-input" id="userMsg" rows="4" placeholder="Draft your transmission or query here..." style="resize: none; padding-top: 0.85rem;" required></textarea>
+          <i class="fas fa-comments"></i>
+        </div>
+        
+        <button type="submit" class="btn-submit-premium">
+          <span>Deploy Secure Message</span> <i class="fas fa-paper-plane"></i>
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- Direct Connections Endpoint Node -->
 <section id="contact" data-aos="fade-up">
-  <h2 class="section-title">Connect & Collaborate</h2>
-  <div class="contact-info">
-    <div><i class="fas fa-mobile-alt"></i> +91-9709316822</div>
-    <div><i class="fas fa-envelope"></i> personal.shivamkumarsingh@gmail.com</div>
-    <div><i class="fab fa-whatsapp"></i> <a href="https://wa.me/919709316822" target="_blank">WhatsApp</a></div>
-    <div><i class="fab fa-telegram"></i> <a href="https://t.me/Sksingh_social">Telegram</a></div>
-    <div><i class="fab fa-github"></i> <a href="https://github.com/Sksingh2007">GitHub</a></div>
-    <div><i class="fab fa-snapchat"></i> <a href="https://www.snapchat.com/@sksingh_social">Snapchat</a></div>
-  </div>
-  <div style="text-align:center; margin-top:2.2rem;">
-    <a href="https://techbaricade.com" target="_blank" class="btn btn-primary"><i class="fas fa-globe"></i> Explore Tech Baricade Group</a>
-    <a href="https://drive.google.com/file/d/1boA_eoNFt9Z8ecgrHZRFDbd7vW3tJMUg/view?usp=drivesdk" target="_blank" class="btn btn-outline" style="margin-left:1rem;">Download Full Resume</a>
+  <h2 class="section-title">Get In Touch</h2>
+  <div class="card">
+    <div style="font-weight:700; text-align:center; font-size:0.92rem; word-break:break-all; margin-bottom: 0.5rem;"><i class="fas fa-envelope" style="color:var(--primary); margin-right:4px;"></i> personal.shivamkumarsingh@gmail.com</div>
+    <div style="font-weight:700; text-align:center; font-size:0.92rem;"><i class="fas fa-phone" style="color:var(--primary); margin-right:4px;"></i> +91 9709316822</div>
+    <div class="contact-grid-links">
+      <a href="https://wa.me/919709316822" target="_blank" class="contact-btn-quick" style="background:rgba(34,197,94,0.12); color:#166534;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <a href="https://t.me/Sksingh_social" target="_blank" class="contact-btn-quick" style="background:rgba(56,189,248,0.12); color:#0369a1;"><i class="fab fa-telegram"></i> Telegram</a>
+    </div>
   </div>
 </section>
 
-<!-- Premium Footer -->
 <footer>
-  <p>© 2026 / All Rights Reserved for Site Owner.</p>
-  <p>Designed with ❤️ By <strong>Mr. Shivam Kumar Singh</strong></p>
-  <p>This site is Hosted by <a href="https://techbaricade.com" target="_blank" style="color:#60a5fa; text-decoration:none; font-weight:600;">Tech Baricade</a> | Innovating Digital Presence</p>
+  <p>© 2026 All Rights Reserved.</p>
+  <p style="margin: 5px 0;">Engineered by <strong>Mr. Shivam Kumar Singh</strong></p>
+  <p>Infrastructure Powered by <a href="https://techbaricade.com" target="_blank">Tech Baricade</a></p>
 </footer>
 
+<!-- Fullscreen Pop Overlay Lightbox Container Components -->
 <div id="imageModal" class="modal">
-  <span class="close-modal">&times;</span>
-  <div class="modal-content"><img id="modalImg" src="" alt="preview"></div>
+  <span class="close-modal">×</span>
+  <div class="modal-content"><img id="modalImg" src=""></div>
 </div>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-  AOS.init({ duration: 800, once: false, mirror: true, offset: 30 });
+  AOS.init({ duration: 400, once: true });
 
+  // Light/Dark Theme Switching Core Node Module
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  const bodyElement = document.body;
+
+  themeToggleBtn.addEventListener('click', () => {
+    const currentTheme = bodyElement.getAttribute('data-theme');
+    if (currentTheme === 'dark') {
+      bodyElement.setAttribute('data-theme', 'light');
+      themeIcon.className = 'fas fa-moon';
+      if(window.currentChartObj) updateChartTheme('light');
+      updateThreeJSColors(false);
+    } else {
+      bodyElement.setAttribute('data-theme', 'dark');
+      themeIcon.className = 'fas fa-sun';
+      if(window.currentChartObj) updateChartTheme('dark');
+      updateThreeJSColors(true);
+    }
+  });
+
+  // Navigation Drawer Sidebar Handlers
   const mobileBtn = document.getElementById('mobile-menu');
   const navLinksElem = document.getElementById('nav-links');
-  mobileBtn.addEventListener('click', () => navLinksElem.classList.toggle('active'));
+  mobileBtn.addEventListener('click', () => {
+    navLinksElem.classList.toggle('active');
+    const icon = mobileBtn.querySelector('i');
+    icon.classList.toggle('fa-bars'); icon.classList.toggle('fa-xmark');
+  });
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinksElem.classList.remove('active');
+      const icon = mobileBtn.querySelector('i');
+      icon.classList.add('fa-bars'); icon.classList.remove('fa-xmark');
+    });
+  });
 
-  const galleryUrls = [
+  // Simulator Engine View Counters Pulse
+  let views = 142580;
+  setInterval(() => {
+    views += Math.floor(Math.random() * 5) + 1;
+    document.getElementById('viewCounter').innerText = views.toLocaleString('en-IN');
+  }, 3000);
+
+  // ==========================================================================
+  // HIGH TECH KINETIC WAVE THREE.JS SCENE OVERLAY
+  // ==========================================================================
+  let scene3d, camera3d, renderer3d, waveParticles;
+  const threeContainer = document.getElementById('threeJsAnalyticsCanvas');
+  let mouseX = 0, mouseY = 0;
+
+  function initThreeDAnalyticsGraphBackground() {
+    scene3d = new THREE.Scene();
+    camera3d = new THREE.PerspectiveCamera(60, threeContainer.clientWidth / 230, 0.1, 1000);
+    camera3d.position.set(0, 12, 28);
+    camera3d.lookAt(0, 0, 0);
+
+    renderer3d = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer3d.setSize(threeContainer.clientWidth, 230);
+    threeContainer.appendChild(renderer3d.domElement);
+
+    // Grid Parameters for Smooth Wave Layout Structure
+    const numX = 35; const numZ = 35;
+    const count = numX * numZ;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+
+    let index = 0;
+    for (let x = 0; x < numX; x++) {
+      for (let z = 0; z < numZ; z++) {
+        positions[index] = (x - numX / 2) * 1.8;      // Position X
+        positions[index + 1] = 0;                     // Position Y (Altered in loop)
+        positions[index + 2] = (z - numZ / 2) * 1.8;  // Position Z
+        index += 3;
+      }
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const initialIsDark = bodyElement.getAttribute('data-theme') === 'dark';
+    
+    const material = new THREE.PointsMaterial({
+      color: initialIsDark ? 0x60a5fa : 0x2563eb,
+      size: 0.35,
+      transparent: true,
+      opacity: 0.35
+    });
+
+    waveParticles = new THREE.Points(geometry, material);
+    scene3d.add(waveParticles);
+
+    // Capture Interaction Coordinate Scaling
+    window.addEventListener('mousemove', (e) => {
+      const rect = threeContainer.getBoundingClientRect();
+      mouseX = ((e.clientX - rect.left) / threeContainer.clientWidth) * 2 - 1;
+      mouseY = -((e.clientY - rect.top) / 230) * 2 + 1;
+    });
+
+    animateThreeDFrame();
+  }
+
+  let waveStep = 0;
+  function animateThreeDFrame() {
+    requestAnimationFrame(animateThreeDFrame);
+    waveStep += 0.03;
+
+    if (waveParticles) {
+      const positions = waveParticles.geometry.attributes.position.array;
+      let index = 1; // target the Y axes specifically
+      
+      for (let x = 0; x < 35; x++) {
+        for (let z = 0; z < 35; z++) {
+          // Dynamic Mathematical Formulation For Live Complex Sinusoidal Waves
+          positions[index] = (Math.sin(x * 0.2 + waveStep) * 1.5) + (Math.cos(z * 0.2 + waveStep) * 1.5);
+          index += 3;
+        }
+      }
+      waveParticles.geometry.attributes.position.needsUpdate = true;
+      
+      // Slight responsive parallax tilt following interaction parameters
+      waveParticles.rotation.y = mouseX * 0.15;
+      waveParticles.rotation.x = mouseY * 0.15;
+    }
+
+    renderer3d.render(scene3d, camera3d);
+  }
+
+  function updateThreeJSColors(isDarkTheme) {
+    if(waveParticles) { waveParticles.material.color.setHex(isDarkTheme ? 0x60a5fa : 0x2563eb); }
+  }
+
+  window.addEventListener('resize', () => {
+    if(camera3d && renderer3d && threeContainer && threeContainer.clientWidth > 0) {
+      camera3d.aspect = threeContainer.clientWidth / 230;
+      camera3d.updateProjectionMatrix();
+      renderer3d.setSize(threeContainer.clientWidth, 230);
+    }
+  });
+
+  // REPOSITORY OF GRAPHICAL METRICS DATASETS
+  const chartDatasets = {
+    growth: { type: 'line', labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], data: [12000, 19000, 32000, 45000, 61000, 84000], label: 'Platform Viewers Growth', color: '#2563eb' },
+    age: { type: 'bar', labels: ['13-17', '18-24', '25-34', '35-44', '45+'], data: [15, 48, 24, 9, 4], label: 'Age Group Metrics (%)', color: '#06b6d4' },
+    gender: { type: 'doughnut', labels: ['Male', 'Female', 'Others'], data: [62, 35, 3], label: 'Sex Profile Ratio (%)', color: ['#2563eb', '#ec4899', '#94a3b8'] },
+    region: { type: 'bar', labels: ['Bihar', 'Delhi NCR', 'Mumbai', 'UP', 'Others'], data: [55, 18, 12, 10, 5], label: 'Top Regions (%)', color: '#a855f7' }
+  };
+
+  window.currentChartObj = null;
+
+  function buildChart(key) {
+    const ctx = document.getElementById('analyticsChartCanvas').getContext('2d');
+    const configData = chartDatasets[key];
+    const isDark = bodyElement.getAttribute('data-theme') === 'dark';
+    const textModeColor = isDark ? '#f1f5f9' : '#0f172a';
+    const gridModeColor = isDark ? '#1e293b' : '#e2e8f0';
+
+    if (window.currentChartObj) { window.currentChartObj.destroy(); }
+
+    let scaleConfig = {};
+    if (configData.type !== 'doughnut') {
+      scaleConfig = {
+        x: { grid: { color: gridModeColor }, ticks: { color: textModeColor, font: { family: 'Plus Jakarta Sans', weight: 600, size: 10 } } },
+        y: { grid: { color: gridModeColor }, ticks: { color: textModeColor, font: { family: 'Plus Jakarta Sans', size: 10 } } }
+      };
+    }
+
+    window.currentChartObj = new Chart(ctx, {
+      type: configData.type,
+      data: {
+        labels: configData.labels,
+        datasets: [{
+          label: configData.label,
+          data: configData.data,
+          backgroundColor: configData.type === 'doughnut' ? configData.color : configData.color + '20',
+          borderColor: configData.type === 'doughnut' ? '#ffffff00' : configData.color,
+          borderWidth: 3,
+          pointBackgroundColor: configData.color,
+          pointHoverRadius: 7,
+          fill: configData.type === 'line',
+          tension: 0.45
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 1200, easing: 'easeOutQuart' },
+        plugins: {
+          legend: { display: true, position: 'top', labels: { color: textModeColor, boxWidth: 12, font: { family: 'Plus Jakarta Sans', weight: 700, size: 11 } } }
+        },
+        scales: scaleConfig
+      }
+    });
+  }
+
+  // ==========================================================================
+  // FULLY AUTOMATED ROTATION SYSTEM FOR ANALYTICS TABS
+  // ==========================================================================
+  const tabsList = ['growth', 'age', 'gender', 'region'];
+  let currentTabIndex = 0;
+  const rotationDuration = 5000; // 5 Seconds Rotation Interval Loop
+  let lastTimeUpdate = performance.now();
+  let automationActive = true;
+
+  function runAutomatedRotationLoop(timestamp) {
+    if (!automationActive) {
+      requestAnimationFrame(runAutomatedRotationLoop);
+      return;
+    }
+
+    const elapsed = timestamp - lastTimeUpdate;
+    const progressPercent = Math.min((elapsed / rotationDuration) * 100, 100);
+    
+    document.getElementById('rotationProgressBar').style.width = `${progressPercent}%`;
+
+    if (elapsed >= rotationDuration) {
+      currentTabIndex = (currentTabIndex + 1) % tabsList.length;
+      const nextTabKey = tabsList[currentTabIndex];
+      
+      // Update UI Buttons
+      const tabButtons = document.querySelectorAll('.analytics-tab-btn');
+      tabButtons.forEach(btn => {
+        if(btn.getAttribute('data-chart-key') === nextTabKey) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      buildChart(nextTabKey);
+      lastTimeUpdate = timestamp;
+    }
+
+    requestAnimationFrame(runAutomatedRotationLoop);
+  }
+
+  // Setup Interaction Hooks To Allow Manual Navigation Overrides
+  document.querySelectorAll('.analytics-tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const selectedKey = this.getAttribute('data-chart-key');
+      currentTabIndex = tabsList.indexOf(selectedKey);
+      
+      document.querySelectorAll('.analytics-tab-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      buildChart(selectedKey);
+      lastTimeUpdate = performance.now(); // Reset progression timeline bar
+    });
+  });
+
+  function updateChartTheme(theme) {
+    const activeBtn = document.querySelector('.analytics-tab-btn.active');
+    if(activeBtn) buildChart(activeBtn.getAttribute('data-chart-key'));
+  }
+
+  // Initialization Sequence Execution
+  buildChart('growth');
+  initThreeDAnalyticsGraphBackground();
+  requestAnimationFrame(runAutomatedRotationLoop);
+
+  // ASYMMETRICAL 2-COLUMN COHESIVE SYSTEM PARSER FOR OFFICIAL GALLERY
+  function populateOfficialCohesiveGallery(containerId, urls) {
+    const container = document.getElementById(containerId);
+    if(!container) return;
+    urls.forEach(url => {
+      const cardDiv = document.createElement('div'); cardDiv.className = 'photo-node-card';
+      const img = document.createElement('img'); img.src = url; img.className = 'gallery-thumb-fit';
+      img.addEventListener('click', () => {
+        document.getElementById('imageModal').style.display = 'flex';
+        document.getElementById('modalImg').src = url;
+      });
+      cardDiv.appendChild(img); container.appendChild(cardDiv);
+    });
+  }
+
+  // FIXED THOUGHTS LAYOUT COMPILER: 1 PHOTO PER LINE EDGE-TO-EDGE VERTICAL STACK Framework
+  function populateFullWidthThoughtsStack(containerId, urls) {
+    const container = document.getElementById(containerId);
+    if(!container) return;
+    urls.forEach(url => {
+      const thoughtCard = document.createElement('div');
+      thoughtCard.className = 'thought-standalone-card';
+      thoughtCard.setAttribute('data-aos', 'fade-up');
+      
+      const img = document.createElement('img');
+      img.src = url;
+      img.className = 'thought-img-full-fit';
+      img.alt = "Standalone Thought Stream";
+      
+      img.addEventListener('click', () => {
+        document.getElementById('imageModal').style.display = 'flex';
+        document.getElementById('modalImg').src = url;
+      });
+      
+      thoughtCard.appendChild(img);
+      container.appendChild(thoughtCard);
+    });
+  }
+
+  // Payload Array Vectors (All Original Hyperlinks Kept)
+  const galleryLinks = [
     "https://drive.google.com/thumbnail?id=1lxtSu7EKUOyzSoQEbI3MG4JNREo_Ginh&sz=w1000",
     "https://drive.google.com/thumbnail?id=1JZAK3xpa0Y7KTYK2f_XZ8j0R0fjEmEEl&sz=w1000",
     "https://drive.google.com/thumbnail?id=1TwTyLv9I8ssCxA9gA-yZdciqxNME0Rz3&sz=w1000",
     "https://drive.google.com/thumbnail?id=1vTqEM_p9gI-kPTXCmo_UZpRDW4j_mVHp&sz=w1000",
     "https://drive.google.com/thumbnail?id=1t1niiMzLuMA_WVVNMt24i5Dmb1334i7-&sz=w1000"
   ];
-  const thoughtUrls = [
+
+  const thoughtLinks = [
     "https://drive.google.com/thumbnail?id=1j6ZUJR8v5KBkVS5KRPc9r9hhj14z5Oz2&sz=w1000",
     "https://drive.google.com/thumbnail?id=1sHF_MI-rzMNcJT1xjzYmCSXHEU4cZDpw&sz=w1000",
     "https://drive.google.com/thumbnail?id=13xDb3IltAWjLkM6MvK7ZVWjuT8kREqW4&sz=w1000",
@@ -490,48 +923,26 @@
     "https://drive.google.com/thumbnail?id=1FKeNM4rlen69z-N7HNjeKyXWTel27foa&sz=w1000"
   ];
 
-  function buildGrid(containerId, urls, className) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    urls.forEach(url => {
-      const div = document.createElement('div');
-      div.className = 'card';
-      const img = document.createElement('img');
-      img.src = url;
-      img.className = className;
-      img.style.objectFit = 'cover';
-      img.style.height = '250px';
-      img.style.width = '100%';
-      img.style.borderRadius = '28px';
-      img.addEventListener('click', () => openModal(url));
-      div.appendChild(img);
-      container.appendChild(div);
-    });
-  }
-  function openModal(src) {
-    const modal = document.getElementById('imageModal');
-    const modalImg = document.getElementById('modalImg');
-    modal.style.display = 'flex';
-    modalImg.src = src;
-  }
-  document.querySelector('.close-modal').addEventListener('click', () => document.getElementById('imageModal').style.display = 'none');
-  window.addEventListener('click', (e) => { if(e.target === document.getElementById('imageModal')) document.getElementById('imageModal').style.display = 'none'; });
+  // Instantiating Content Assets
+  populateOfficialCohesiveGallery('galleryContainer', galleryLinks);
+  populateFullWidthThoughtsStack('thoughtContainer', thoughtLinks);
 
-  buildGrid('galleryContainer', galleryUrls, 'gallery-img');
-  buildGrid('thoughtContainer', thoughtUrls, 'thought-img');
+  // INTERACTION HUB EVENT PROCESSING TRANSITIONS
+  function triggerProfessionalFeedback(event) {
+    event.preventDefault();
+    const successOverlay = document.getElementById('successScreen');
+    successOverlay.style.display = 'flex';
+    setTimeout(() => { successOverlay.classList.add('triggered'); }, 10);
+  }
 
-  document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const hash = this.getAttribute('href');
-      if (hash === '#') return;
-      const target = document.querySelector(hash);
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth' });
-        if (navLinksElem.classList.contains('active')) navLinksElem.classList.remove('active');
-      }
-    });
-  });
+  function resetInteractionTerminal() {
+    const successOverlay = document.getElementById('successScreen');
+    document.getElementById('interactionForm').reset();
+    successOverlay.classList.remove('triggered');
+    setTimeout(() => { successOverlay.style.display = 'none'; }, 400);
+  }
+
+  document.querySelector('.close-modal').addEventListener('click', () => { document.getElementById('imageModal').style.display = 'none'; });
 </script>
 </body>
 </html>
