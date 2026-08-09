@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIVAM KUMAR SINGH | Elite Interactive Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Dynamic Accent Color Palette - Customizable (1000+ combinations via JS) */
+            --primary-hue: 220;
+            --primary-sat: 90%;
+            --primary-light: 56%;
+            
+            --primary: hsl(var(--primary-hue), var(--primary-sat), var(--primary-light));
+            --primary-glow: hsla(var(--primary-hue), var(--primary-sat), var(--primary-light), 0.4);
+            --secondary: hsl(calc(var(--primary-hue) + 40), 80%, 60%);
+            
+            /* Dark Theme Default */
+            --bg-body: #0b0f19;
+            --bg-surface: #111827;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --nav-bg: rgba(11, 15, 25, 0.85);
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Light Theme Overrides */
+        [data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.8);
+            --border-color: rgba(0, 0, 0, 0.1);
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --nav-bg: rgba(248, 250, 252, 0.85);
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .logo {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Glassmorphic Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 7%;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ctrl-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .ctrl-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Theme Customizer Drawer Trigger */
+        .color-picker-wrapper {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            background: var(--bg-card);
+            padding: 4px 10px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+        }
+
+        .dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .dot:hover { transform: scale(1.2); }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 130px 7% 70px;
+            gap: 50px;
+            position: relative;
+        }
+
+        .hero-content {
+            flex: 1.2;
+        }
+
+        .badge-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            background: hsla(var(--primary-hue), var(--primary-sat), var(--primary-light), 0.15);
+            color: var(--primary);
+            border: 1px solid var(--primary-glow);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 10px;
+        }
+
+        .hero h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .hero-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+        }
+
+        .hero-card p {
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        /* Profile Image Container with Correct Photo Link */
+        .profile-container {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .profile-img {
+            width: 310px;
+            height: 410px;
+            border-radius: 24px;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            box-shadow: 0 20px 40px var(--primary-glow);
+            position: relative;
+            z-index: 2;
+            transition: transform 0.4s ease;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.03);
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 90px 7%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2.3rem;
+            font-weight: 800;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* Table Design */
+        .table-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            overflow-x: auto;
+            margin-bottom: 35px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--primary);
+            font-weight: 700;
+            padding: 18px 22px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        /* IMPRESSIVE SKILLS SECTION DESIGN */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: var(--card-shadow);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px var(--primary-glow);
+        }
+
+        .skill-card-icon {
+            width: 55px;
+            height: 55px;
+            background: hsla(var(--primary-hue), var(--primary-sat), var(--primary-light), 0.15);
+            color: var(--primary);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+        }
+
+        .skill-title {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .skill-item {
+            margin-bottom: 15px;
+        }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(150, 150, 150, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+
+        /* General Grid */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 20px;
+            transition: 0.3s ease;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        /* Declaration Styling */
+        .declaration-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .signature-img {
+            max-width: 180px;
+            margin: 15px auto 5px;
+            filter: drop-shadow(0 0 5px var(--primary-glow));
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+            padding: 60px 7% 30px;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .hero { flex-direction: column-reverse; text-align: center; padding-top: 110px; }
+            .profile-img { width: 260px; height: 350px; }
+            nav { padding: 1rem 4%; }
+            .nav-controls { gap: 8px; }
+            .ctrl-btn span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Glass Navbar with Theme & Language Controls -->
+    <nav>
+        <div class="logo">
+            <i class="fas fa-code-branch" style="color: var(--primary);"></i>
+            SHIVAM KUMAR <span>SINGH</span>
+        </div>
+
+        <div class="nav-controls">
+            <!-- Language Selector -->
+            <button class="ctrl-btn" onclick="toggleLanguage()" id="lang-btn">
+                <i class="fas fa-language"></i> <span id="lang-text">English</span>
+            </button>
+
+            <!-- Light/Dark Toggle -->
+            <button class="ctrl-btn" onclick="toggleMode()" id="mode-btn">
+                <i class="fas fa-moon" id="mode-icon"></i> <span id="mode-text">Dark</span>
+            </button>
+
+            <!-- 1000+ Theme Accent Selector -->
+            <div class="color-picker-wrapper">
+                <div class="dot" style="background: #2563eb;" onclick="setThemeHue(220)" title="Blue Theme"></div>
+                <div class="dot" style="background: #7c3aed;" onclick="setThemeHue(265)" title="Purple Theme"></div>
+                <div class="dot" style="background: #059669;" onclick="setThemeHue(160)" title="Emerald Theme"></div>
+                <div class="dot" style="background: #dc2626;" onclick="setThemeHue(0)" title="Red Theme"></div>
+                <div class="dot" style="background: #d97706;" onclick="setThemeHue(38)" title="Amber Theme"></div>
+                <input type="color" id="customColor" onchange="applyCustomColor(this.value)" style="width:20px; height:20px; border:none; cursor:pointer; background:transparent;" title="1000+ Custom Color Picker">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge-bar">
+                <span class="badge"><i class="fas fa-award"></i> <span class="lang" data-hi="CBSE/SAFAL प्रभारी" data-en="CBSE/SAFAL IN-CHARGE">CBSE/SAFAL IN-CHARGE</span></span>
+                <span class="badge"><i class="fas fa-robot"></i> <span class="lang" data-hi="AI एवं EdTech विशेषज्ञ" data-en="AI & EDTECH PROFESSIONAL">AI & EDTECH PROFESSIONAL</span></span>
+                <span class="badge"><i class="fas fa-laptop-code"></i> <span class="lang" data-hi="IT ट्रेनर" data-en="IT TRAINER">IT TRAINER</span></span>
+            </div>
+            
+            <h1>SHIVAM KUMAR SINGH</h1>
+            <h3 class="lang" data-hi="शिक्षक | कंप्यूटर एवं शैक्षणिक प्रौद्योगिकी विशेषज्ञ" data-en="Educator | Computer & Educational Technology Professional">Educator | Computer & Educational Technology Professional</h3>
+
+            <div class="hero-card">
+                <p><strong><i class="fas fa-phone"></i> Mobile:</strong> +91-9709316822 | <strong><i class="fas fa-envelope"></i> Email:</strong> Personal.shivam@outlook.com</p>
+                <p><strong><i class="fas fa-map-marker-alt"></i> Location:</strong> Saharsa, Bihar – 852201</p>
+                <hr style="border:0; border-top:1px solid var(--border-color); margin:12px 0;">
+                <p class="lang" 
+                   data-hi="विद्यालय शिक्षा, कंप्यूटर शिक्षण, छात्र मार्गदर्शन और AI-आधारित शिक्षण तकनीकों में समृद्ध अनुभव के साथ समर्पित एवं तकनीक-उन्मुख शिक्षक।"
+                   data-en="Dedicated and technology-oriented Educator, IT Professional and Educational Technology Trainer with experience in school education, computer teaching, student mentoring, and AI-enabled learning.">
+                   Dedicated and technology-oriented Educator, IT Professional and Educational Technology Trainer with experience in school education, computer teaching, student mentoring, and AI-enabled learning.
+                </p>
+            </div>
+        </div>
+
+        <!-- CORRECT PHOTO LINK APPLIED -->
+        <div class="profile-container">
+            <img src="https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/c5147741a29f92f14076a39cd375d4/690f4a08860f444952205611/sh_1779037367579.png" alt="Shivam Kumar Singh Photo" class="profile-img">
+        </div>
+    </section>
+
+    <!-- Qualifications Section -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title lang" data-hi="शैक्षणिक एवं व्यावसायिक योग्यताएं" data-en="Qualifications & Certifications">Qualifications & Certifications</h2>
+        </div>
+
+        <h3 style="margin-bottom:15px; color:var(--primary);"><i class="fas fa-graduation-cap"></i> <span class="lang" data-hi="शैक्षणिक योग्यता" data-en="Academic Qualifications">Academic Qualifications</span></h3>
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="lang" data-hi="डिग्री / कोर्स" data-en="Qualification">Qualification</th>
+                        <th class="lang" data-hi="बोर्ड / विश्वविद्यालय" data-en="Board / University">Board / University</th>
+                        <th class="lang" data-hi="वर्ष / स्थिति" data-en="Year / Status">Year / Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>M.Com. – Master of Commerce</strong></td>
+                        <td>BNMU, Madhepura</td>
+                        <td><span style="color:#10b981; font-weight:bold;">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>B.Com. – Bachelor of Commerce</strong></td>
+                        <td>BNMU, Madhepura</td>
+                        <td><span style="color:#10b981; font-weight:bold;">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Intermediate – Commerce</strong></td>
+                        <td>BSEB</td>
+                        <td>2021</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Matriculation</strong></td>
+                        <td>CBSE</td>
+                        <td>2019</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 style="margin-top:35px; margin-bottom:15px; color:var(--primary);"><i class="fas fa-desktop"></i> <span class="lang" data-hi="कंप्यूटर योग्यता" data-en="Professional Computer Qualifications">Professional Computer Qualifications</span></h3>
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="lang" data-hi="कोर्स नाम" data-en="Course Title">Course Title</th>
+                        <th class="lang" data-hi="विवरण" data-en="Full Form / Description">Full Form / Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>PGDCA</strong></td><td>Post Graduate Diploma in Computer Application</td></tr>
+                    <tr><td><strong>ADCA</strong></td><td>Advanced Diploma in Computer Applications</td></tr>
+                    <tr><td><strong>ADIT</strong></td><td>Advanced Diploma in Information Technology</td></tr>
+                    <tr><td><strong>DCA / CCC / DTP</strong></td><td>Diploma in Computer Application / Certificate / Desktop Publishing</td></tr>
+                    <tr><td><strong>CTTC / KYP</strong></td><td>Computer Teacher Training Certificate / Kushal Yuva Program</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- HIGHLY IMPRESSIVE CORE SKILLS SECTION -->
+    <section class="section" style="background: var(--bg-surface);">
+        <div class="section-header">
+            <h2 class="section-title lang" data-hi="मुख्य कौशल एवं दक्षता" data-en="Core Skills & Expertise">Core Skills & Expertise</h2>
+        </div>
+
+        <div class="skills-grid">
+            <!-- Teaching & Leadership -->
+            <div class="skill-card">
+                <div class="skill-card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <div class="skill-title lang" data-hi="शिक्षण एवं शिक्षणशास्त्र" data-en="Teaching & Pedagogy">Teaching & Pedagogy</div>
+                
+                <div class="skill-item">
+                    <div class="skill-info"><span>Classroom Management</span><span>95%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 95%;"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-info"><span>Curriculum & Lesson Planning</span><span>90%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 90%;"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-info"><span>Student Mentoring & Assessment</span><span>92%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 92%;"></div></div>
+                </div>
+            </div>
+
+            <!-- AI & EdTech -->
+            <div class="skill-card">
+                <div class="skill-card-icon"><i class="fas fa-brain"></i></div>
+                <div class="skill-title lang" data-hi="AI एवं शैक्षणिक तकनीक" data-en="AI & Educational Tech">AI & Educational Tech</div>
+                
+                <div class="skill-item">
+                    <div class="skill-info"><span>AI Tools in Education</span><span>94%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 94%;"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-info"><span>Computational Thinking</span><span>88%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 88%;"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-info"><span>Digital Content & Learning</span><span>90%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 90%;"></div></div>
+                </div>
+            </div>
+
+            <!-- Technical & IT -->
+            <div class="skill-card">
+                <div class="skill-card-icon"><i class="fas fa-code"></i></div>
+                <div class="skill-title lang" data-hi="IT एवं तकनीकी कौशल" data-en="IT & Software Skills">IT & Software Skills</div>
+                
+                <div class="skill-item">
+                    <div class="skill-info"><span>HTML / CSS / Web Tools</span><span>85%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 85%;"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-info"><span>Software Development & Tally</span><span>82%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 82%;"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-info"><span>IT Consultancy & Systems</span><span>88%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 88%;"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Achievements (SEPARATED) -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title lang" data-hi="प्रमुख उपलब्धियां" data-en="Key Achievements">Key Achievements</h2>
+        </div>
+
+        <div class="grid-3">
+            <div class="card">
+                <i class="fas fa-award"></i>
+                <h3 class="lang" data-hi="प्रधानमंत्री द्वारा प्रशंसा पत्र" data-en="PM Appreciation Letter">PM Appreciation Letter</h3>
+                <p class="lang" data-hi="परीक्षा पे चर्चा कार्यक्रम में उत्कृष्ट विचार प्रस्तुत करने हेतु प्रधानमंत्री द्वारा सराहना पत्र।" data-en="Received a Letter of Appreciation from the Prime Minister for Pariksha Pe Charcha Programme.">Received a Letter of Appreciation from the Prime Minister for Pariksha Pe Charcha Programme.</p>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-rocket"></i>
+                <h3 class="lang" data-hi="टेक बैरिकेड एवं क्विज़ आयोजन" data-en="Tech Baricade & Competitions">Tech Baricade & Competitions</h3>
+                <p class="lang" data-hi="Tech Baricade एवं Sparkle Artistry की स्थापना व राष्ट्रीय स्तर के क्विज़ का सफल समन्वय।" data-en="Founded Tech Baricade and coordinated Kaun Banega Genius National Level Quiz Competitions.">Founded Tech Baricade and coordinated Kaun Banega Genius National Level Quiz Competitions.</p>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-laptop-code"></i>
+                <h3 class="lang" data-hi="कस्टम सॉफ्टवेयर निर्माण" data-en="Software Development">Software Development</h3>
+                <p class="lang" data-hi="HTML एवं CSS की मदद से व्यावसायिक बिलिंग सॉफ्टवेयर का सफल निर्माण।" data-en="Developed professional custom billing software using HTML & CSS.">Developed professional custom billing software using HTML & CSS.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publications & Books (SEPARATED) -->
+    <section class="section" style="background: var(--bg-surface);">
+        <div class="section-header">
+            <h2 class="section-title lang" data-hi="पुस्तके एवं लेखन" data-en="Publications & Books">Publications & Books</h2>
+        </div>
+
+        <div class="grid-3">
+            <div class="card">
+                <i class="fas fa-book-open"></i>
+                <h3>Price of Freedom</h3>
+                <p style="color:var(--primary); font-size:0.9rem;">India’s Path to Independence</p>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-book"></i>
+                <h3>आखिर कब तक?</h3>
+                <p style="color:var(--primary); font-size:0.9rem;">Social Reflections & Perspectives</p>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-book-reader"></i>
+                <h3>The Life is a Series of Game</h3>
+                <p style="color:var(--primary); font-size:0.9rem;">Mindset & Life Experiences</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Areas of Interest (SEPARATED) -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title lang" data-hi="रुचि के क्षेत्र" data-en="Areas of Interest">Areas of Interest</h2>
+        </div>
+
+        <div class="grid-3">
+            <div class="card">
+                <i class="fas fa-robot"></i>
+                <h3 class="lang" data-hi="शिक्षा में कृत्रिम बुद्धिमत्ता (AI)" data-en="AI in Education">AI in Education</h3>
+                <p class="lang" data-hi="शिक्षा में AI का उपयोग एवं डिजिटल शिक्षण प्रक्रिया का सुदृढ़ीकरण।" data-en="Integrating Artificial Intelligence into school classrooms and modern pedagogy.">Integrating Artificial Intelligence into school classrooms and modern pedagogy.</p>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-laptop"></i>
+                <h3 class="lang" data-hi="कंप्यूटेशनल सोच" data-en="Computational Thinking">Computational Thinking</h3>
+                <p class="lang" data-hi="छात्रों में तार्किक सोच एवं समस्या समाधान क्षमता का विकास।" data-en="Developing logic and problem-solving skills in students through coding & tech.">Developing logic and problem-solving skills in students through coding & tech.</p>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-globe"></i>
+                <h3 class="lang" data-hi="डिजिटल परिवर्तन" data-en="Digital Transformation">Digital Transformation</h3>
+                <p class="lang" data-hi="शैक्षणिक संस्थानों में डिजिटल तकनीकों का प्रभावी समावेशन।" data-en="Driving technology adoption and interactive e-learning in schools.">Driving technology adoption and interactive e-learning in schools.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Declaration Section with Live Internet Date -->
+    <section class="section">
+        <div class="declaration-card">
+            <h3 style="margin-bottom:12px;"><i class="fas fa-file-signature"></i> <span class="lang" data-hi="घोषणा" data-en="Declaration">Declaration</span></h3>
+            <p class="lang" 
+               data-hi="मैं एतद्द्वारा घोषणा करता हूं कि इस बायोडाटा में दी गई जानकारी मेरी सर्वोत्तम जानकारी और विश्वास के अनुसार सत्य और सही है।"
+               data-en="I hereby declare that the information provided in this resume is true and correct to the best of my knowledge and belief.">
+               I hereby declare that the information provided in this resume is true and correct to the best of my knowledge and belief.
+            </p>
+            <br>
+            <p><strong>Place:</strong> Saharsa, Bihar</p>
+            <p><strong>Date:</strong> <span id="auto-date" style="color:var(--primary); font-weight:bold;">Loading Date...</span></p>
+
+            <img src="https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/c5147741a29f92f14076a39cd375d4/69eba4b91fdb9c954f8804d4/sh_1781334015180.jpg" alt="Signature" class="signature-img">
+            <h4>SHIVAM KUMAR SINGH</h4>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© Shivam Kumar Singh | Educator & IT Professional Portfolio</p>
+    </footer>
+
+    <!-- Interactive JavaScript Engine -->
+    <script>
+        // 1. Automatic Live Internet Date
+        function loadLiveDate() {
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('auto-date').textContent = new Date().toLocaleDateString('en-US', dateOptions);
+        }
+
+        // 2. Hindi / English Language Toggle Engine
+        let currentLang = 'en';
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            document.getElementById('lang-text').textContent = currentLang === 'en' ? 'Hindi' : 'English';
+            
+            document.querySelectorAll('.lang').forEach(el => {
+                const text = el.getAttribute(`data-${currentLang}`);
+                if(text) el.textContent = text;
+            });
+        }
+
+        // 3. Dark / Light Mode Toggle
+        function toggleMode() {
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            document.getElementById('mode-icon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            document.getElementById('mode-text').textContent = isDark ? 'Light' : 'Dark';
+        }
+
+        // 4. 1000+ Themes Hue System
+        function setThemeHue(hue) {
+            document.documentElement.style.setProperty('--primary-hue', hue);
+        }
+
+        function applyCustomColor(hexColor) {
+            // Converts Hex to HSL dynamically for 1000+ combinations
+            let r = parseInt(hexColor.substr(1,2),16)/255;
+            let g = parseInt(hexColor.substr(3,2),16)/255;
+            let b = parseInt(hexColor.substr(5,2),16)/255;
+            let max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h = 0;
+            if (max !== min) {
+                let d = max - min;
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            setThemeHue(Math.round(h * 360));
+        }
+
+        window.onload = loadLiveDate;
+    </script>
+</body>
+</html>
